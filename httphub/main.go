@@ -5,13 +5,13 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/ElMehdi19/httphub/httphub/router"
 )
 
 func main() {
 	port := 5000
-	handler := mux.NewRouter()
+	mux := router.New()
 
 	log.Printf("Live on http://127.0.0.1:%d", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), handler))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), mux))
 }
