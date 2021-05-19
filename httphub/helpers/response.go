@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/ElMehdi19/httphub/httphub/structs"
@@ -15,6 +16,16 @@ func MakeResponse(r *http.Request) structs.HTTPMethodsResponse {
 		Args:    r.URL.Query(),
 		Headers: r.Header,
 		Origin:  r.Header.Get("origin"),
+	}
+	if r.Method == "GET" {
+		return resp
+	}
+
+	var jsonBody interface{}
+	if err := json.NewDecoder(r.Body).Decode(&jsonBody); err == nil {
+		resp.JSON = jsonBody
+	} else {
+		resp.JSON = err.Error()
 	}
 	return resp
 }
