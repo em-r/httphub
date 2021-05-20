@@ -15,3 +15,9 @@ func MethodGet(w http.ResponseWriter, r *http.Request) {
 	e := json.NewEncoder(w)
 	e.Encode(helpers.MakeResponse(r))
 }
+
+func MethodPost(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	e := json.NewEncoder(w)
+	e.Encode(helpers.MakeResponse(r))
+}
