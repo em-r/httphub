@@ -10,5 +10,6 @@ type HTTPMethodsResponse struct {
 	Origin  string              `json:"origin,omitempty"`
 	Form    map[string][]string `json:"form,omitempty"`
 	JSON    interface{}         `json:"json,omitempty"`
+	Data    interface{}         `json:"data,omitempty"`
 	Method  string              `json:"method,omitempty"`
 }

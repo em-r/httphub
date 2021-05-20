@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -38,8 +39,13 @@ func MakeResponse(r *http.Request) structs.HTTPMethodsResponse {
 	case "application/x-www-form-urlencoded":
 		if err := r.ParseForm(); err == nil {
 			resp.Form = r.PostForm
+		} else {
+			resp.Args = map[string][]string{"error": {err.Error()}}
 		}
-
+	default:
+		body := bytes.NewBuffer(nil)
+		io.Copy(body, r.Body)
+		resp.Data = body.String()
 	}
 
 	return resp

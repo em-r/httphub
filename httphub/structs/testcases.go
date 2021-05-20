@@ -7,4 +7,5 @@ type HTTPMethodsTestCase struct {
 	JSON        interface{}
 	Form        map[string][]string
 	ContentType string
+	Data        interface{}
 }

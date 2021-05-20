@@ -59,14 +59,19 @@ func TestMethodGetHandler(t *testing.T) {
 func TestMethodPostHandler(t *testing.T) {
 	assert := assert.New(t)
 	base := "http://127.0.0.1:5000/post"
+	baseTc := structs.HTTPMethodsTestCase{
+		Args: map[string][]string{"x": {"1", "2"}, "y": {"3"}},
+		Headers: map[string][]string{
+			"scranton": {"bears", "beats", "battlestar galactica"},
+			"whomai":   {"mehdi"},
+		},
+	}
+
 	tcs := []structs.HTTPMethodsTestCase{
 		{
-			Name: "with json",
-			Args: map[string][]string{"x": {"1", "2"}, "y": {"3"}},
-			Headers: map[string][]string{
-				"scranton": {"bears", "beats", "battlestar galactica"},
-				"whomai":   {"mehdi"},
-			},
+			Name:    "with json",
+			Args:    baseTc.Args,
+			Headers: baseTc.Headers,
 			JSON: map[string]interface{}{
 				"bool": true,
 				"int":  1,
@@ -75,12 +80,9 @@ func TestMethodPostHandler(t *testing.T) {
 			ContentType: "application/json",
 		},
 		{
-			Name: "with form",
-			Args: map[string][]string{"x": {"1", "2"}, "y": {"3"}},
-			Headers: map[string][]string{
-				"scranton": {"bears", "beats", "battlestar galactica"},
-				"whomai":   {"mehdi"},
-			},
+			Name:    "with form",
+			Args:    baseTc.Args,
+			Headers: baseTc.Headers,
 			Form: map[string][]string{
 				"bool": {"true"},
 				"int":  {"1"},
@@ -88,51 +90,63 @@ func TestMethodPostHandler(t *testing.T) {
 			},
 			ContentType: "application/x-www-form-urlencoded",
 		},
+		{
+			Name:    "with text",
+			Args:    baseTc.Args,
+			Headers: baseTc.Headers,
+			Data:    "xxx",
+			// ContentType: "text/pl",
+		},
 	}
 
 	for _, tc := range tcs {
-		u := helpers.CreateURL(base, tc.Args)
+		t.Run(tc.Name, func(t *testing.T) {
+			u := helpers.CreateURL(base, tc.Args)
 
-		var b []byte
-		switch tc.ContentType {
-		case "application/json":
-			b, _ = json.Marshal(tc.JSON)
-		case "application/x-www-form-urlencoded":
-			b = []byte(url.Values(tc.Form).Encode())
-		default:
-			b = nil
-		}
-		req, err := http.NewRequest("POST", u, bytes.NewReader(b))
-		req.Header = tc.Headers
-		req.Header.Add("content-type", tc.ContentType)
+			var b []byte
+			switch tc.ContentType {
+			case "application/json":
+				b, _ = json.Marshal(tc.JSON)
+			case "application/x-www-form-urlencoded":
+				b = []byte(url.Values(tc.Form).Encode())
+			default:
+				// plain/text
+				b = []byte(tc.Data.(string))
+			}
+			req, err := http.NewRequest("POST", u, bytes.NewReader(b))
+			req.Header = tc.Headers
+			req.Header.Set("content-type", tc.ContentType)
 
-		if !assert.NoError(err) {
-			assert.FailNow(err.Error())
-		}
+			if !assert.NoError(err) {
+				assert.FailNow(err.Error())
+			}
 
-		rec := httptest.NewRecorder()
-		MethodPost(rec, req)
+			rec := httptest.NewRecorder()
+			MethodPost(rec, req)
 
-		res := rec.Result()
+			res := rec.Result()
 
-		var body structs.HTTPMethodsResponse
-		if err := json.NewDecoder(res.Body).Decode(&body); err != nil {
-			assert.FailNow(err.Error())
-		}
+			var body structs.HTTPMethodsResponse
+			if err := json.NewDecoder(res.Body).Decode(&body); err != nil {
+				assert.FailNow(err.Error())
+			}
 
-		switch tc.ContentType {
-		case "application/json":
-			assert.Equal(fmt.Sprintf("%v", tc.JSON), fmt.Sprintf("%v", body.JSON))
-		case "application/x-www-form-urlencoded":
-			assert.Equal(fmt.Sprintf("%v", tc.Form), fmt.Sprintf("%v", body.Form))
-		}
+			switch tc.ContentType {
+			case "application/json":
+				assert.Equal(fmt.Sprintf("%v", tc.JSON), fmt.Sprintf("%v", body.JSON))
+			case "application/x-www-form-urlencoded":
+				assert.Equal(fmt.Sprintf("%v", tc.Form), fmt.Sprintf("%v", body.Form))
+			default:
+				assert.Equal(tc.Data, body.Data)
+			}
 
-		if len(tc.Args) == 0 {
-			assert.Empty(body.Args)
-		} else {
-			assert.True(reflect.DeepEqual(tc.Args, body.Args))
-		}
+			if len(tc.Args) == 0 {
+				assert.Empty(body.Args)
+			} else {
+				assert.True(reflect.DeepEqual(tc.Args, body.Args))
+			}
 
-		assert.True(reflect.DeepEqual(tc.Headers, body.Headers), body.Headers)
+			assert.True(reflect.DeepEqual(tc.Headers, body.Headers), body.Headers)
+		})
 	}
 }
