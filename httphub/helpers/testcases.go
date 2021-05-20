@@ -38,10 +38,17 @@ var HTTPMethodsTcs = []structs.HTTPMethodsTestCase{
 		ContentType: "application/x-www-form-urlencoded",
 	},
 	{
+		Name:        "with binary",
+		Args:        HTTPMethodsBaseTc.Args,
+		Headers:     HTTPMethodsBaseTc.Headers,
+		Data:        "\x01\x02\x03\x04\x05",
+		ContentType: "application/octet-stream",
+	},
+	{
 		Name:    "with text",
 		Args:    HTTPMethodsBaseTc.Args,
 		Headers: HTTPMethodsBaseTc.Headers,
-		Data:    "xxx",
+		Data:    "some random stuff",
 	},
 }
 
