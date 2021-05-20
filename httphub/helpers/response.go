@@ -2,10 +2,17 @@ package helpers
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 
 	"github.com/ElMehdi19/httphub/httphub/structs"
 )
+
+func parseJSON(r io.Reader) (interface{}, error) {
+	var jsonBody interface{}
+	err := json.NewDecoder(r).Decode(&jsonBody)
+	return jsonBody, err
+}
 
 // MakeResponse creates and returns
 // a structs.HTTPMethodsResponse instance
@@ -21,11 +28,19 @@ func MakeResponse(r *http.Request) structs.HTTPMethodsResponse {
 		return resp
 	}
 
-	var jsonBody interface{}
-	if err := json.NewDecoder(r.Body).Decode(&jsonBody); err == nil {
-		resp.JSON = jsonBody
-	} else {
-		resp.JSON = err.Error()
+	switch r.Header.Get("content-type") {
+	case "application/json":
+		if body, err := parseJSON(r.Body); err == nil {
+			resp.JSON = body
+		} else {
+			resp.JSON = err.Error()
+		}
+	case "application/x-www-form-urlencoded":
+		if err := r.ParseForm(); err == nil {
+			resp.Form = r.PostForm
+		}
+
 	}
+
 	return resp
 }
