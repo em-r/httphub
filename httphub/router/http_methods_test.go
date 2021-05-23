@@ -63,7 +63,7 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	}
 
 	rec := httptest.NewRecorder()
-	MethodPOST(rec, req)
+	ViewBase(rec, req)
 
 	res := rec.Result()
 
@@ -81,7 +81,7 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	}
 }
 
-func TestMethodGetHandler(t *testing.T) {
+func TestGETHandler(t *testing.T) {
 	assert := assert.New(t)
 	base := "http://127.0.0.1:5000/get"
 	tc := helpers.HTTPMethodsBaseTc
@@ -95,7 +95,7 @@ func TestMethodGetHandler(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	MethodGET(rec, req)
+	ViewBase(rec, req)
 	res := rec.Result()
 	defer res.Body.Close()
 
@@ -117,7 +117,7 @@ func TestMethodGetHandler(t *testing.T) {
 	assert.Empty(body.Data)
 }
 
-func TestMethodPostHandler(t *testing.T) {
+func TestPOSTHandler(t *testing.T) {
 	for _, tc := range helpers.HTTPMethodsTcs {
 		t.Run(tc.Name, func(t *testing.T) {
 			testMethodWithBody(t, tc, "POST")
