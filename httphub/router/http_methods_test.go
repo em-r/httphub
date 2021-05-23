@@ -63,7 +63,7 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	}
 
 	rec := httptest.NewRecorder()
-	MethodPost(rec, req)
+	MethodPOST(rec, req)
 
 	res := rec.Result()
 
@@ -95,7 +95,7 @@ func TestMethodGetHandler(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	MethodGet(rec, req)
+	MethodGET(rec, req)
 	res := rec.Result()
 	defer res.Body.Close()
 

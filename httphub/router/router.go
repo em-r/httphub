@@ -9,8 +9,8 @@ import (
 func New() http.Handler {
 	handler := mux.NewRouter()
 
-	handler.HandleFunc("/get", MethodGet).Methods("GET")
-	handler.HandleFunc("/post", MethodPost).Methods("POST")
+	handler.HandleFunc("/get", MethodGET).Methods("GET")
+	handler.HandleFunc("/post", MethodPOST).Methods("POST")
 
 	return handler
 }
