@@ -17,6 +17,16 @@ var HTTPMethodsBaseTc = structs.HTTPMethodsTestCase{
 
 var HTTPMethodsTcs = []structs.HTTPMethodsTestCase{
 	{
+		Name:    "with form",
+		Args:    HTTPMethodsBaseTc.Args,
+		Headers: HTTPMethodsBaseTc.Headers,
+		Form: map[string][]string{
+			"user":    {"me"},
+			"message": {"whatever"},
+		},
+		ContentType: "application/x-www-form-urlencoded",
+	},
+	{
 		Name:    "with json",
 		Args:    HTTPMethodsBaseTc.Args,
 		Headers: HTTPMethodsBaseTc.Headers,
@@ -26,16 +36,6 @@ var HTTPMethodsTcs = []structs.HTTPMethodsTestCase{
 			"str":  "whatever",
 		},
 		ContentType: "application/json",
-	},
-	{
-		Name:    "with form",
-		Args:    HTTPMethodsBaseTc.Args,
-		Headers: HTTPMethodsBaseTc.Headers,
-		Form: map[string][]string{
-			"user":    {"me"},
-			"message": {"whatever"},
-		},
-		ContentType: "application/x-www-form-urlencoded",
 	},
 	{
 		Name:        "with binary",

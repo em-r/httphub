@@ -51,6 +51,17 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	assert := assert.New(t)
 	base := fmt.Sprintf("http://127.0.0.1:5000/%s", method)
 
+	viewFuncs := map[string]http.HandlerFunc{
+		"POST":   ViewPost,
+		"PUT":    ViewPut,
+		"PATCH":  ViewPatch,
+		"DELETE": ViewDelete,
+	}
+	viewFunc, ok := viewFuncs[method]
+	if !ok {
+		assert.FailNow("method not allowed", method)
+	}
+
 	u := helpers.CreateURL(base, tc.Args)
 	b := helpers.MakeBodyFromTestCase(tc)
 
@@ -63,7 +74,8 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	}
 
 	rec := httptest.NewRecorder()
-	ViewBase(rec, req)
+	// ViewBase(rec, req)
+	viewFunc(rec, req)
 
 	res := rec.Result()
 
@@ -95,7 +107,7 @@ func TestGETHandler(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	ViewBase(rec, req)
+	ViewGet(rec, req)
 	res := rec.Result()
 	defer res.Body.Close()
 
@@ -121,6 +133,30 @@ func TestPOSTHandler(t *testing.T) {
 	for _, tc := range helpers.HTTPMethodsTcs {
 		t.Run(tc.Name, func(t *testing.T) {
 			testMethodWithBody(t, tc, "POST")
+		})
+	}
+}
+
+func TestPUTHandler(t *testing.T) {
+	for _, tc := range helpers.HTTPMethodsTcs {
+		t.Run(tc.Name, func(t *testing.T) {
+			testMethodWithBody(t, tc, "PUT")
+		})
+	}
+}
+
+func TestPATCHHandler(t *testing.T) {
+	for _, tc := range helpers.HTTPMethodsTcs {
+		t.Run(tc.Name, func(t *testing.T) {
+			testMethodWithBody(t, tc, "PATCH")
+		})
+	}
+}
+
+func TestDELETEHandler(t *testing.T) {
+	for _, tc := range helpers.HTTPMethodsTcs[1:] {
+		t.Run(tc.Name, func(t *testing.T) {
+			testMethodWithBody(t, tc, "DELETE")
 		})
 	}
 }

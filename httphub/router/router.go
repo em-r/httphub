@@ -9,11 +9,12 @@ import (
 func New() http.Handler {
 	handler := mux.NewRouter()
 
-	handler.HandleFunc("/get", ViewBase).Methods("GET")
-	handler.HandleFunc("/put", ViewBase).Methods("PUT")
-	handler.HandleFunc("/post", ViewBase).Methods("POST")
-	handler.HandleFunc("/patch", ViewBase).Methods("patch")
-	handler.HandleFunc("/delete", ViewBase).Methods("delete")
+	handler.HandleFunc("/get", ViewGet).Methods("GET")
+	handler.HandleFunc("/put", ViewPut).Methods("PUT")
+	handler.HandleFunc("/post", ViewPost).Methods("POST")
+	handler.HandleFunc("/patch", ViewPatch).Methods("patch")
+	handler.HandleFunc("/delete", ViewDelete).Methods("delete")
+	handler.HandleFunc("/any", ViewAny)
 
 	return handler
 }

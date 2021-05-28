@@ -73,3 +73,31 @@ func TestMethods(t *testing.T) {
 		})
 	}
 }
+
+func TestAny(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	methods := []string{"GET", "PUT", "POST", "PUT", "DELETE"}
+	for _, method := range methods {
+		t.Run(method, func(t *testing.T) {
+			req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", base, "any"), nil)
+			assert.NoError(err)
+
+			client := &http.Client{}
+			resp, err := client.Do(req)
+			assert.NoError(err)
+			defer resp.Body.Close()
+
+			var body structs.HTTPMethodsResponse
+			if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
+				b, _ := ioutil.ReadAll(resp.Body)
+				assert.FailNow(err.Error(), method, string(b))
+			}
+
+			assert.Equal(http.StatusOK, 200)
+			assert.Equal(body.Method, method)
+		})
+	}
+}

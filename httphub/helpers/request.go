@@ -1,6 +1,8 @@
 package helpers
 
-import "net/url"
+import (
+	"net/url"
+)
 
 // CreateURL creates a url by concatinating
 // the base to the query args and returns
