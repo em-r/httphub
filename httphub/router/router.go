@@ -3,11 +3,13 @@ package router
 import (
 	"net/http"
 
+	"github.com/ElMehdi19/httphub/middlewares"
 	"github.com/gorilla/mux"
 )
 
 func New() http.Handler {
 	handler := mux.NewRouter()
+	handler.Use(middlewares.Logger)
 
 	handler.HandleFunc("/get", ViewGet).Methods("GET")
 	handler.HandleFunc("/put", ViewPut).Methods("PUT")
