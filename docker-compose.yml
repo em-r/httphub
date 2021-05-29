@@ -10,3 +10,4 @@ services:
       - "5000:5000"
     volumes:
       - .:/home/src/app
+    env_file: .env
