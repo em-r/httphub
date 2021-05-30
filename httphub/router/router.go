@@ -10,7 +10,7 @@ import (
 
 func New() http.Handler {
 	handler := mux.NewRouter()
-	handler.Use(middlewares.Recover, middlewares.Logger)
+	handler.Use(middlewares.Recover, middlewares.Logger, middlewares.JSONContent)
 
 	handler.HandleFunc("/get", ViewGet).Methods("GET")
 	handler.HandleFunc("/put", ViewPut).Methods("PUT")
