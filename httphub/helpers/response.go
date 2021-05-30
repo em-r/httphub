@@ -30,7 +30,7 @@ func parseBody(r *http.Request, resp *structs.HTTPMethodsResponse) {
 		}
 	case "application/x-www-form-urlencoded":
 		if err := r.ParseForm(); err == nil {
-			resp.Form = r.PostForm
+			resp.Form = Flatten(r.PostForm)
 		} else {
 			log.Println(err.Error())
 		}
@@ -64,9 +64,9 @@ func MakeResponse(r *http.Request, want ...string) structs.HTTPMethodsResponse {
 		case "url":
 			resp.URL = r.URL.Path
 		case "headers":
-			resp.Headers = r.Header
+			resp.Headers = Flatten(r.Header)
 		case "args":
-			resp.Args = r.URL.Query()
+			resp.Args = Flatten(r.URL.Query())
 		case "method":
 			resp.Method = r.Method
 		case "origin":

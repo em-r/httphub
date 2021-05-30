@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"strings"
 	"testing"
 
@@ -30,12 +29,13 @@ func TestGET(t *testing.T) {
 	resp, err := http.Get(fmt.Sprintf("%s/get?x=1", base))
 	assert.NoError(err)
 	assert.Equal(resp.StatusCode, http.StatusOK)
+	assert.Equal("application/json", resp.Header.Get("content-type"))
 
 	var body structs.HTTPMethodsResponse
 	if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
 		assert.FailNow(err.Error())
 	}
-	assert.True(reflect.DeepEqual(map[string][]string{"x": {"1"}}, body.Args))
+	assert.Equal(fmt.Sprintf("%v", map[string]string{"x": "1"}), fmt.Sprintf("%v", body.Args))
 
 	resp, _ = http.Post(fmt.Sprintf("%s/get?x=1", base), "", nil)
 	assert.Equal(http.StatusMethodNotAllowed, resp.StatusCode)
@@ -58,8 +58,10 @@ func TestMethods(t *testing.T) {
 			client := &http.Client{}
 			resp, err := client.Do(req)
 			assert.NoError(err)
+			defer resp.Body.Close()
 
-			assert.Equal(resp.StatusCode, http.StatusOK)
+			assert.Equal(http.StatusOK, resp.StatusCode)
+			assert.Equal("application/json", resp.Header.Get("content-type"))
 
 			var body structs.HTTPMethodsResponse
 			if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
@@ -67,9 +69,9 @@ func TestMethods(t *testing.T) {
 				assert.FailNow(err.Error(), string(b))
 			}
 
-			assert.True(reflect.DeepEqual(map[string][]string{"x": {"1"}}, body.Args))
+			assert.Equal(fmt.Sprintf("%v", map[string]string{"x": "1"}), fmt.Sprintf("%v", body.Args))
 			assert.Equal("test", body.Data)
-			assert.Equal(body.Headers["Content-Type"][0], "text/plain")
+			assert.Equal(body.Headers["Content-Type"], "text/plain")
 		})
 	}
 }
@@ -89,6 +91,8 @@ func TestAny(t *testing.T) {
 			resp, err := client.Do(req)
 			assert.NoError(err)
 			defer resp.Body.Close()
+
+			assert.Equal("application/json", resp.Header.Get("content-type"))
 
 			var body structs.HTTPMethodsResponse
 			if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {

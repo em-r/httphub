@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
 	"github.com/ElMehdi19/httphub/httphub/helpers"
@@ -22,7 +21,7 @@ func testArgs(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.HTTPMet
 	if len(tc.Args) == 0 {
 		assert.Empty(body.Args)
 	} else {
-		assert.True(reflect.DeepEqual(tc.Args, body.Args))
+		assert.Equal(fmt.Sprintf("%v", helpers.Flatten(tc.Args)), fmt.Sprintf("%v", body.Args))
 	}
 }
 
@@ -37,7 +36,7 @@ func testResponseBody(t *testing.T, tc structs.HTTPMethodsTestCase, body structs
 	case "application/json":
 		assert.Equal(fmt.Sprintf("%v", tc.JSON), fmt.Sprintf("%v", body.JSON))
 	case "application/x-www-form-urlencoded":
-		assert.Equal(fmt.Sprintf("%v", tc.Form), fmt.Sprintf("%v", body.Form))
+		assert.Equal(fmt.Sprintf("%v", helpers.Flatten(tc.Form)), fmt.Sprintf("%v", body.Form))
 	default:
 		assert.Equal(tc.Data, body.Data)
 	}
@@ -87,9 +86,10 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 	testResponseBody(t, tc, body)
 	testArgs(t, tc, body)
 
-	assert.True(reflect.DeepEqual(tc.Headers, body.Headers), body.Headers)
+	assert.Equal(fmt.Sprintf("%v", helpers.Flatten(tc.Headers)), fmt.Sprintf("%v", body.Headers))
+
 	if body.Method != "" {
-		assert.Equal(body.Method, req.Method)
+		assert.Equal(body.Method, req.Method, body.Method, req.Method)
 	}
 }
 
@@ -111,8 +111,6 @@ func TestGETHandler(t *testing.T) {
 	res := rec.Result()
 	defer res.Body.Close()
 
-	assert.Equal("application/json", res.Header.Get("content-type"))
-
 	var body structs.HTTPMethodsResponse
 	if err = json.NewDecoder(res.Body).Decode(&body); err != nil {
 		assert.FailNowf("could not parse response body: %s", err.Error())
@@ -122,7 +120,7 @@ func TestGETHandler(t *testing.T) {
 	testArgs(t, tc, body)
 
 	// assert request headers are the some as those returned in the response body.
-	assert.True(reflect.DeepEqual(tc.Headers, body.Headers))
+	assert.Equal(fmt.Sprintf("%v", helpers.Flatten(tc.Headers)), fmt.Sprintf("%v", body.Headers))
 	// body fields in the response body must be empty.
 	assert.Empty(body.JSON)
 	assert.Empty(body.Form)
