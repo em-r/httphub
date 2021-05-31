@@ -2,7 +2,7 @@ basePath: /
 consumes:
 - application/json
 - application/x-www-form-urlencoded
-host: httphub.io
+host: localhost:5000
 info:
   contact:
     email: mehdi@httphub.io
@@ -14,7 +14,77 @@ info:
     url: http://opensource.org/licenses/MIT
   title: HTTPHub
   version: 1.0.0
-paths: {}
+paths:
+  /delete:
+    delete:
+      operationId: postRequest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's DELETE params.
+      schemes:
+      - http
+      - https
+      summary: The request's DELETE params.
+      tags:
+      - HTTP Methods
+  /get:
+    get:
+      operationId: getRequest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's query args.
+      schemes:
+      - http
+      - https
+      summary: The request's query args.
+      tags:
+      - HTTP Methods
+  /patch:
+    patch:
+      operationId: postRequest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's PATCH params.
+      schemes:
+      - http
+      - https
+      summary: The request's PATCH params.
+      tags:
+      - HTTP Methods
+  /post:
+    post:
+      operationId: postRequest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's post params.
+      schemes:
+      - http
+      - https
+      summary: The request's POST params.
+      tags:
+      - HTTP Methods
+  /put:
+    put:
+      operationId: postRequest
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's PUT params.
+      schemes:
+      - http
+      - https
+      summary: The request's PUT params.
+      tags:
+      - HTTP Methods
 produces:
 - application/json
 - text/html
