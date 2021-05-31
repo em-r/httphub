@@ -1,0 +1,25 @@
+basePath: /
+consumes:
+- application/json
+- application/x-www-form-urlencoded
+host: httphub.io
+info:
+  contact:
+    email: mehdi@httphub.io
+    name: El Mehdi Rami
+    url: https://mehdi.codes
+  description: An HTTP Request/Response service fully written in Go
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  title: HTTPHub
+  version: 1.0.0
+paths: {}
+produces:
+- application/json
+- text/html
+- text/plain
+schemes:
+- http
+- https
+swagger: "2.0"
