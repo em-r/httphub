@@ -37,7 +37,10 @@ func parseBody(r *http.Request, resp *structs.HTTPMethodsResponse) {
 	default:
 		body := bytes.NewBuffer(nil)
 		io.Copy(body, r.Body)
-		resp.Data = body.String()
+		// resp.Data = body.Sting()
+		if body.String() != "" {
+			resp.Data = body.String()
+		}
 	}
 }
 

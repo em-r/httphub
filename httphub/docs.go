@@ -1,6 +1,7 @@
 // Package classification HTTPHub
 //
-// An HTTP Request/Response service fully written in Go
+// An HTTP Request/Response service fully written in Go.<br>
+// <b>Run locally</b>: <code>$ docker run -p 5000:5000 iammehdi/httphub</code>
 //
 //     Schemes: http, https
 //     Host: localhost:5000

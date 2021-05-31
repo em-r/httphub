@@ -8,7 +8,9 @@ info:
     email: mehdi@httphub.io
     name: El Mehdi Rami
     url: https://mehdi.codes
-  description: An HTTP Request/Response service fully written in Go
+  description: |-
+    An HTTP Request/Response service fully written in Go.<br>
+    <b>Run locally</b>: <code>$ docker run -p 5000:5000 iammehdi/httphub</code>
   license:
     name: MIT
     url: http://opensource.org/licenses/MIT
