@@ -35,7 +35,7 @@ func ViewGet(w http.ResponseWriter, r *http.Request) {
 	//     description: The request's query args.
 
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "url", "headers", "args"))
+	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "origin"))
 }
 
 // ViewAll is a view function that handles POST requests.
@@ -60,7 +60,7 @@ func ViewPost(w http.ResponseWriter, r *http.Request) {
 	//     description: The request's post params.
 
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body"))
+	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body", "origin"))
 }
 
 // ViewAll is a view function that handles PUT requests.
@@ -85,7 +85,7 @@ func ViewPut(w http.ResponseWriter, r *http.Request) {
 	//     description: The request's PUT params.
 
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body"))
+	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body", "origin"))
 }
 
 // ViewAll is a view function that handles PATCH requests.
@@ -110,7 +110,7 @@ func ViewPatch(w http.ResponseWriter, r *http.Request) {
 	//     description: The request's PATCH params.
 
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body"))
+	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body", "origin"))
 }
 
 // ViewAll is a view function that handles DELETE requests.
@@ -135,5 +135,5 @@ func ViewDelete(w http.ResponseWriter, r *http.Request) {
 	//     description: The request's DELETE params.
 
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body"))
+	e.Encode(helpers.MakeResponse(r, "url", "headers", "args", "body", "origin"))
 }
