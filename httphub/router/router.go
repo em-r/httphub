@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/ElMehdi19/httphub/httphub/helpers"
-	"github.com/ElMehdi19/httphub/middlewares"
+	"github.com/ElMehdi19/httphub/httphub/middlewares"
 	"github.com/gorilla/mux"
 )
 
