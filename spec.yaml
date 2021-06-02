@@ -87,6 +87,20 @@ paths:
       summary: The request's PUT params.
       tags:
       - HTTP Methods
+  /user:
+    get:
+      operationId: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's IP address and user agent
+      schemes:
+      - http
+      - https
+      summary: The user's information.
+      tags:
+      - User
 produces:
 - application/json
 - text/html
