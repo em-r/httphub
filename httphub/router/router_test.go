@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -13,7 +15,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setUpTestServer() (string, func()) {
+func setUpTestServer(options ...func()) (string, func()) {
+	for _, opt := range options {
+		opt()
+	}
+
 	mux := New()
 	server := httptest.NewServer(mux)
 	return server.URL, func() {
@@ -84,7 +90,7 @@ func TestAny(t *testing.T) {
 	methods := []string{"GET", "PUT", "POST", "PUT", "DELETE"}
 	for _, method := range methods {
 		t.Run(method, func(t *testing.T) {
-			req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", base, "any"), nil)
+			req, err := http.NewRequest(method, fmt.Sprintf("%s/any", base), nil)
 			assert.NoError(err)
 
 			client := &http.Client{}
@@ -111,7 +117,7 @@ func TestUser(t *testing.T) {
 	base, tearDown := setUpTestServer()
 	defer tearDown()
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", base, "user"), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/user", base), nil)
 	assert.NoError(err)
 	req.Header.Set("user-agent", "Raymond Reddington")
 
@@ -128,4 +134,69 @@ func TestUser(t *testing.T) {
 
 	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
 	assert.Equal("127.0.0.1", body.IP)
+}
+
+func TestDebug(t *testing.T) {
+	assert := assert.New(t)
+	type testCase struct {
+		name      string
+		file      string
+		funcOpt   func()
+		isDevMode bool
+		fileValid bool
+	}
+	tcs := []testCase{
+		{
+			name:    "DEV_MODE OFF",
+			file:    "./router.go",
+			funcOpt: func() {},
+		},
+		{
+			name:      "DEV_MODE ON",
+			file:      "./router.go",
+			isDevMode: true,
+			fileValid: true,
+			funcOpt: func() {
+				os.Setenv("DEV_MODE", "true")
+			},
+		},
+		{
+			name:      "FILE DOESNT EXIST",
+			file:      "./something.go",
+			isDevMode: true,
+			funcOpt: func() {
+				os.Setenv("DEV_MODE", "true")
+			},
+		},
+	}
+
+	for _, tc := range tcs {
+		t.Run(tc.name, func(t *testing.T) {
+			base, tearDown := setUpTestServer(tc.funcOpt)
+			defer tearDown()
+
+			path, err := filepath.Abs(tc.file)
+			assert.NoError(err)
+
+			defer func() {
+				os.Unsetenv("DEV_MODE")
+			}()
+
+			resp, err := http.Get(fmt.Sprintf("%s/debug?path=%s&line=1", base, path))
+			assert.NoError(err)
+
+			if !tc.isDevMode {
+				assert.Equal(http.StatusNotFound, resp.StatusCode, os.Getenv("DEV_MODE"))
+				return
+			}
+
+			if !tc.fileValid {
+				assert.Equal(http.StatusInternalServerError, resp.StatusCode)
+				return
+			}
+
+			assert.Equal(http.StatusOK, resp.StatusCode, os.Getenv("DEV_MODE"))
+		})
+	}
+
 }
