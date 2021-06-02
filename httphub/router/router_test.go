@@ -105,3 +105,27 @@ func TestAny(t *testing.T) {
 		})
 	}
 }
+
+func TestUser(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", base, "user"), nil)
+	assert.NoError(err)
+	req.Header.Set("user-agent", "Raymond Reddington")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
+	var body structs.HTTPMethodsResponse
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+
+	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
+	assert.Equal("127.0.0.1", body.IP)
+}

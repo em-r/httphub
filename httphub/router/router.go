@@ -12,6 +12,11 @@ func New() http.Handler {
 	handler := mux.NewRouter()
 	handler.Use(middlewares.Recover, middlewares.Logger, middlewares.JSONContent, middlewares.CORS)
 
+	if helpers.IsDevMode() {
+		handler.HandleFunc("/debug", SourceCodeHandler)
+	}
+
+	// HTTP Methods handlers
 	handler.HandleFunc("/get", ViewGet).Methods("GET")
 	handler.HandleFunc("/put", ViewPut).Methods("PUT")
 	handler.HandleFunc("/post", ViewPost).Methods("POST")
@@ -19,9 +24,7 @@ func New() http.Handler {
 	handler.HandleFunc("/delete", ViewDelete).Methods("delete")
 	handler.HandleFunc("/any", ViewAny)
 
-	if helpers.IsDevMode() {
-		handler.HandleFunc("/debug", SourceCodeHandler)
-	}
+	handler.HandleFunc("/user", ViewUser).Methods("GET")
 
 	return handler
 }
