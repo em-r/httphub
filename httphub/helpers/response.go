@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/ElMehdi19/httphub/httphub/structs"
 )
@@ -48,7 +49,7 @@ func parseBody(r *http.Request, resp *structs.HTTPMethodsResponse) {
 // instance populated with the field names passed on the want variadic param.
 func MakeResponse(r *http.Request, want ...string) structs.HTTPMethodsResponse {
 	var resp structs.HTTPMethodsResponse
-	keys := []string{"url", "headers", "args", "method", "body", "origin", "form"}
+	keys := []string{"url", "headers", "args", "method", "body", "origin", "form", "ip", "user-agent"}
 	isValid := func(field string) bool {
 		for _, key := range keys {
 			if key == field {
@@ -76,6 +77,10 @@ func MakeResponse(r *http.Request, want ...string) structs.HTTPMethodsResponse {
 			resp.Origin = r.Header.Get("origin")
 		case "body":
 			parseBody(r, &resp)
+		case "ip":
+			resp.IP = strings.Split(r.RemoteAddr, ":")[0]
+		case "user-agent":
+			resp.UserAgent = r.Header.Get("user-agent")
 		}
 	}
 
