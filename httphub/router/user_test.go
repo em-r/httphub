@@ -69,3 +69,26 @@ func TestViewUserAgent(t *testing.T) {
 
 	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
 }
+
+func TestViewHeaders(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000/headers", nil)
+	assert.NoError(err)
+
+	headers := map[string]string{
+		"who":   "Dwight Schrute",
+		"where": "Scranton",
+	}
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
+	rec := httptest.NewRecorder()
+	ViewHeaders(rec, req)
+
+	var body structs.Response
+	err = json.NewDecoder(rec.Body).Decode(&body)
+	assert.NoError(err)
+
+	assert.Equal(fmt.Sprintf("%v", helpers.Flatten(req.Header)), fmt.Sprintf("%v", body.Headers))
+}

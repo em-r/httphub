@@ -241,3 +241,37 @@ func TestUserAgent(t *testing.T) {
 
 	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
 }
+
+func TestHeaders(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/headers", base), nil)
+	assert.NoError(err)
+
+	headers := map[string]string{
+		"Who":   "Dwight Schrute",
+		"Where": "Scranton",
+	}
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
+	var body structs.Response
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+
+	for k, v := range headers {
+		header, ok := body.Headers[k]
+		assert.True(ok)
+		assert.Equal(v, header)
+	}
+}

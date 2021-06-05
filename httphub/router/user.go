@@ -38,7 +38,7 @@ func ViewIP(w http.ResponseWriter, r *http.Request) {
 	// produces:
 	// - application/json
 	//
-	// summary: The user's information.
+	// summary: The request's origin.
 	//
 	// schemes:
 	// - http
@@ -63,7 +63,7 @@ func ViewUserAgent(w http.ResponseWriter, r *http.Request) {
 	// produces:
 	// - application/json
 	//
-	// summary: The user's information.
+	// summary: The request's user-agent.
 	//
 	// schemes:
 	// - http
@@ -79,4 +79,29 @@ func ViewUserAgent(w http.ResponseWriter, r *http.Request) {
 
 	e := json.NewEncoder(w)
 	e.Encode(helpers.MakeResponse(r, "user-agent"))
+}
+
+func ViewHeaders(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /headers User
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: The request's headers.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - User
+	//
+	// responses:
+	//   '200':
+	//     description: The request's headers
+	//
+
+	e := json.NewEncoder(w)
+	e.Encode(helpers.MakeResponse(r, "headers"))
 }
