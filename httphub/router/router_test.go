@@ -200,3 +200,21 @@ func TestDebug(t *testing.T) {
 	}
 
 }
+
+func TestIP(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/ip", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
+	var body structs.HTTPMethodsResponse
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+
+	assert.Equal("127.0.0.1", body.IP)
+}

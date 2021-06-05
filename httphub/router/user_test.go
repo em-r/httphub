@@ -37,3 +37,19 @@ func TestViewUser(t *testing.T) {
 	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
 	assert.Equal(fmt.Sprintf("%v", helpers.Flatten(req.Header)), fmt.Sprintf("%v", body.Headers))
 }
+
+func TestViewIP(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000/ip", nil)
+	assert.NoError(err)
+	req.RemoteAddr = "127.0.0.1"
+
+	rec := httptest.NewRecorder()
+	ViewIP(rec, req)
+
+	var body structs.HTTPMethodsResponse
+	err = json.NewDecoder(rec.Body).Decode(&body)
+	assert.NoError(err)
+
+	assert.Equal(req.RemoteAddr, body.IP)
+}

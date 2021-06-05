@@ -30,3 +30,28 @@ func ViewUser(w http.ResponseWriter, r *http.Request) {
 	e := json.NewEncoder(w)
 	e.Encode(helpers.MakeResponse(r, "ip", "user-agent", "headers"))
 }
+
+func ViewIP(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /ip User
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: The user's information.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - User
+	//
+	// responses:
+	//   '200':
+	//     description: The request's IP address
+	//
+
+	e := json.NewEncoder(w)
+	e.Encode(helpers.MakeResponse(r, "ip"))
+}
