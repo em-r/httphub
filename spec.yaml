@@ -45,6 +45,34 @@ paths:
       summary: The request's query args.
       tags:
       - HTTP Methods
+  /headers:
+    get:
+      operationId: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's headers
+      schemes:
+      - http
+      - https
+      summary: The request's headers.
+      tags:
+      - User
+  /ip:
+    get:
+      operationId: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's IP address
+      schemes:
+      - http
+      - https
+      summary: The request's origin.
+      tags:
+      - User
   /patch:
     patch:
       operationId: postRequest
@@ -94,11 +122,25 @@ paths:
       - application/json
       responses:
         "200":
-          description: The request's IP address and user agent
+          description: The request's IP address, user agent and headers
       schemes:
       - http
       - https
       summary: The user's information.
+      tags:
+      - User
+  /user-agent:
+    get:
+      operationId: User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's user-agent
+      schemes:
+      - http
+      - https
+      summary: The request's user-agent.
       tags:
       - User
 produces:
