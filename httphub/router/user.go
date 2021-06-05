@@ -25,8 +25,8 @@ func ViewUser(w http.ResponseWriter, r *http.Request) {
 	//
 	// responses:
 	//   '200':
-	//     description: The request's IP address and user agent
+	//     description: The request's IP address, user agent and headers
 	//
 	e := json.NewEncoder(w)
-	e.Encode(helpers.MakeResponse(r, "ip", "user-agent"))
+	e.Encode(helpers.MakeResponse(r, "ip", "user-agent", "headers"))
 }
