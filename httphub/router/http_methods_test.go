@@ -16,7 +16,7 @@ import (
 // testArgs tests if the request's query args
 // are the same as those returned in the response
 // body.
-func testArgs(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.HTTPMethodsResponse) {
+func testArgs(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.Response) {
 	assert := assert.New(t)
 	if len(tc.Args) == 0 {
 		assert.Empty(body.Args)
@@ -30,7 +30,7 @@ func testArgs(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.HTTPMet
 // the response body. The field to be checked
 // is determined based on the request's content-type
 // header.
-func testResponseBody(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.HTTPMethodsResponse) {
+func testResponseBody(t *testing.T, tc structs.HTTPMethodsTestCase, body structs.Response) {
 	assert := assert.New(t)
 	switch tc.ContentType {
 	case "application/json":
@@ -78,7 +78,7 @@ func testMethodWithBody(t *testing.T, tc structs.HTTPMethodsTestCase, method str
 
 	res := rec.Result()
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	if err := json.NewDecoder(res.Body).Decode(&body); err != nil {
 		assert.FailNow(err.Error())
 	}
@@ -111,7 +111,7 @@ func TestGETHandler(t *testing.T) {
 	res := rec.Result()
 	defer res.Body.Close()
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	if err = json.NewDecoder(res.Body).Decode(&body); err != nil {
 		assert.FailNowf("could not parse response body: %s", err.Error())
 	}

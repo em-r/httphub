@@ -29,7 +29,7 @@ func TestViewUser(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ViewUser(rec, req)
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	err = json.NewDecoder(rec.Body).Decode(&body)
 	assert.NoError(err)
 
@@ -47,7 +47,7 @@ func TestViewIP(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ViewIP(rec, req)
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	err = json.NewDecoder(rec.Body).Decode(&body)
 	assert.NoError(err)
 

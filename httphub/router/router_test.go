@@ -37,7 +37,7 @@ func TestGET(t *testing.T) {
 	assert.Equal(resp.StatusCode, http.StatusOK)
 	assert.Equal("application/json", resp.Header.Get("content-type"))
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
 		assert.FailNow(err.Error())
 	}
@@ -69,7 +69,7 @@ func TestMethods(t *testing.T) {
 			assert.Equal(http.StatusOK, resp.StatusCode)
 			assert.Equal("application/json", resp.Header.Get("content-type"))
 
-			var body structs.HTTPMethodsResponse
+			var body structs.Response
 			if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
 				b, _ := ioutil.ReadAll(resp.Body)
 				assert.FailNow(err.Error(), string(b))
@@ -100,7 +100,7 @@ func TestAny(t *testing.T) {
 
 			assert.Equal("application/json", resp.Header.Get("content-type"))
 
-			var body structs.HTTPMethodsResponse
+			var body structs.Response
 			if err := json.NewDecoder(resp.Body).Decode(&body); !assert.NoError(err) {
 				b, _ := ioutil.ReadAll(resp.Body)
 				assert.FailNow(err.Error(), method, string(b))
@@ -128,7 +128,7 @@ func TestUser(t *testing.T) {
 
 	assert.Equal(http.StatusOK, resp.StatusCode)
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	err = json.NewDecoder(resp.Body).Decode(&body)
 	assert.NoError(err)
 
@@ -212,7 +212,7 @@ func TestIP(t *testing.T) {
 
 	assert.Equal(http.StatusOK, resp.StatusCode)
 
-	var body structs.HTTPMethodsResponse
+	var body structs.Response
 	err = json.NewDecoder(resp.Body).Decode(&body)
 	assert.NoError(err)
 

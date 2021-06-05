@@ -17,7 +17,7 @@ func parseJSON(r io.Reader) (interface{}, error) {
 	return jsonBody, err
 }
 
-func parseBody(r *http.Request, resp *structs.HTTPMethodsResponse) {
+func parseBody(r *http.Request, resp *structs.Response) {
 	if r.Method == "GET" {
 		return
 	}
@@ -47,8 +47,8 @@ func parseBody(r *http.Request, resp *structs.HTTPMethodsResponse) {
 
 // MakeResponse creates and returns a structs.HTTPMethodsResponse
 // instance populated with the field names passed on the want variadic param.
-func MakeResponse(r *http.Request, want ...string) structs.HTTPMethodsResponse {
-	var resp structs.HTTPMethodsResponse
+func MakeResponse(r *http.Request, want ...string) structs.Response {
+	var resp structs.Response
 	keys := []string{"url", "headers", "args", "method", "body", "origin", "form", "ip", "user-agent"}
 	isValid := func(field string) bool {
 		for _, key := range keys {

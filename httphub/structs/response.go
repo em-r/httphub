@@ -3,7 +3,7 @@ package structs
 // HTTPMethodsResponse represents the response
 // that will be sent back to clients requesting
 // any of the http_methods endpoint.
-type HTTPMethodsResponse struct {
+type Response struct {
 	URL       string                 `json:"url,omitempty"`
 	Args      map[string]interface{} `json:"args,omitempty"`
 	Headers   map[string]interface{} `json:"headers,omitempty"`
