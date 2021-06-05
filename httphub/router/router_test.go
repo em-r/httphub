@@ -218,3 +218,26 @@ func TestIP(t *testing.T) {
 
 	assert.Equal("127.0.0.1", body.IP)
 }
+
+func TestUserAgent(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/user-agent", base), nil) //http.Get()
+	assert.NoError(err)
+	req.Header.Set("user-agent", "Raymond Reddington")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
+	var body structs.Response
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+
+	assert.Equal(req.Header.Get("user-agent"), body.UserAgent)
+}
