@@ -30,5 +30,8 @@ func New() http.Handler {
 	handler.HandleFunc("/user-agent", ViewUserAgent).Methods("GET")
 	handler.HandleFunc("/headers", ViewHeaders).Methods("GET")
 
+	// status codes handlers
+	handler.HandleFunc("/status/{code}", ViewStatusCodes)
+
 	return handler
 }

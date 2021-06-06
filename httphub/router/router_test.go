@@ -275,3 +275,13 @@ func TestHeaders(t *testing.T) {
 		assert.Equal(v, header)
 	}
 }
+
+func TestStatusCodes(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/status/xxx", base))
+	assert.NoError(err)
+	assert.Equal(http.StatusBadRequest, resp.StatusCode)
+}

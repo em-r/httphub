@@ -115,6 +115,34 @@ paths:
       summary: The request's PUT params.
       tags:
       - HTTP Methods
+  /status/{code}:
+    get:
+      operationId: codes
+      parameters:
+      - description: Status code
+        in: path
+        name: code
+        required: true
+      produces:
+      - application/json
+      - text/plain
+      responses:
+        "100":
+          description: Information responses
+        "200":
+          description: Success
+        "300":
+          description: Redirection
+        "400":
+          description: Client errors
+        "500":
+          description: Server errors
+      schemes:
+      - http
+      - https
+      summary: Return the given status code
+      tags:
+      - Status codes
   /user:
     get:
       operationId: User
