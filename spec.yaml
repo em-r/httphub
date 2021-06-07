@@ -47,7 +47,7 @@ paths:
       - HTTP Methods
   /headers:
     get:
-      operationId: User
+      operationId: Request
       produces:
       - application/json
       responses:
@@ -58,10 +58,10 @@ paths:
       - https
       summary: The request's headers.
       tags:
-      - User
+      - Request inspection
   /ip:
     get:
-      operationId: User
+      operationId: Request
       produces:
       - application/json
       responses:
@@ -72,7 +72,7 @@ paths:
       - https
       summary: The request's origin.
       tags:
-      - User
+      - Request inspection
   /patch:
     patch:
       operationId: postRequest
@@ -115,6 +115,20 @@ paths:
       summary: The request's PUT params.
       tags:
       - HTTP Methods
+  /request:
+    get:
+      operationId: Request
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The request's IP address, user agent and headers
+      schemes:
+      - http
+      - https
+      summary: The user's information.
+      tags:
+      - Request inspection
   /status/{code}:
     get:
       operationId: codes
@@ -143,23 +157,9 @@ paths:
       summary: Return the given status code
       tags:
       - Status codes
-  /user:
-    get:
-      operationId: User
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: The request's IP address, user agent and headers
-      schemes:
-      - http
-      - https
-      summary: The user's information.
-      tags:
-      - User
   /user-agent:
     get:
-      operationId: User
+      operationId: Request
       produces:
       - application/json
       responses:
@@ -170,7 +170,7 @@ paths:
       - https
       summary: The request's user-agent.
       tags:
-      - User
+      - Request inspection
 produces:
 - application/json
 - text/html

@@ -25,7 +25,7 @@ func New() http.Handler {
 	handler.HandleFunc("/any", ViewAny)
 
 	// User Handlers
-	handler.HandleFunc("/user", ViewUser).Methods("GET")
+	handler.HandleFunc("/request", ViewRequest).Methods("GET")
 	handler.HandleFunc("/ip", ViewIP).Methods("GET")
 	handler.HandleFunc("/user-agent", ViewUserAgent).Methods("GET")
 	handler.HandleFunc("/headers", ViewHeaders).Methods("GET")

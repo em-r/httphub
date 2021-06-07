@@ -112,12 +112,12 @@ func TestAny(t *testing.T) {
 	}
 }
 
-func TestUser(t *testing.T) {
+func TestRequest(t *testing.T) {
 	assert := assert.New(t)
 	base, tearDown := setUpTestServer()
 	defer tearDown()
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/user", base), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/request", base), nil)
 	assert.NoError(err)
 	req.Header.Set("user-agent", "Raymond Reddington")
 

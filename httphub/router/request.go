@@ -7,8 +7,8 @@ import (
 	"github.com/ElMehdi19/httphub/httphub/helpers"
 )
 
-func ViewUser(w http.ResponseWriter, r *http.Request) {
-	// swagger:operation GET /user User
+func ViewRequest(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /request Request
 	//
 	// ---
 	// produces:
@@ -21,7 +21,7 @@ func ViewUser(w http.ResponseWriter, r *http.Request) {
 	// - https
 	//
 	// tags:
-	// - User
+	// - Request inspection
 	//
 	// responses:
 	//   '200':
@@ -32,7 +32,7 @@ func ViewUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func ViewIP(w http.ResponseWriter, r *http.Request) {
-	// swagger:operation GET /ip User
+	// swagger:operation GET /ip Request
 	//
 	// ---
 	// produces:
@@ -45,7 +45,7 @@ func ViewIP(w http.ResponseWriter, r *http.Request) {
 	// - https
 	//
 	// tags:
-	// - User
+	// - Request inspection
 	//
 	// responses:
 	//   '200':
@@ -57,7 +57,7 @@ func ViewIP(w http.ResponseWriter, r *http.Request) {
 }
 
 func ViewUserAgent(w http.ResponseWriter, r *http.Request) {
-	// swagger:operation GET /user-agent User
+	// swagger:operation GET /user-agent Request
 	//
 	// ---
 	// produces:
@@ -70,7 +70,7 @@ func ViewUserAgent(w http.ResponseWriter, r *http.Request) {
 	// - https
 	//
 	// tags:
-	// - User
+	// - Request inspection
 	//
 	// responses:
 	//   '200':
@@ -82,7 +82,7 @@ func ViewUserAgent(w http.ResponseWriter, r *http.Request) {
 }
 
 func ViewHeaders(w http.ResponseWriter, r *http.Request) {
-	// swagger:operation GET /headers User
+	// swagger:operation GET /headers Request
 	//
 	// ---
 	// produces:
@@ -95,7 +95,7 @@ func ViewHeaders(w http.ResponseWriter, r *http.Request) {
 	// - https
 	//
 	// tags:
-	// - User
+	// - Request inspection
 	//
 	// responses:
 	//   '200':

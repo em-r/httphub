@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestViewUser(t *testing.T) {
+func TestViewRequest(t *testing.T) {
 	assert := assert.New(t)
 	req, err := http.NewRequest("GET", "http://127.0.0.1:5000", nil)
 	assert.NoError(err)
@@ -27,7 +27,7 @@ func TestViewUser(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	ViewUser(rec, req)
+	ViewRequest(rec, req)
 
 	var body structs.Response
 	err = json.NewDecoder(rec.Body).Decode(&body)
