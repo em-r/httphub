@@ -40,6 +40,26 @@ paths:
       summary: Basic Auth protected route.
       tags:
       - Auth
+  /auth/bearer:
+    get:
+      operationId: Auth
+      parameters:
+      - description: Bearer Auth header
+        in: headers
+        name: Authorization
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful authentication
+        "401":
+          description: Unsuccessful authentication
+      schemes:
+      - http
+      - https
+      summary: Bearer Auth protected route.
+      tags:
+      - Auth
   /delete:
     delete:
       operationId: postRequest

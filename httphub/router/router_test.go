@@ -305,3 +305,24 @@ func TestBasicAuth(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 }
+
+func TestBearerAuth(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/auth/bearer", base))
+	assert.NoError(err)
+	assert.Equal(http.StatusUnauthorized, resp.StatusCode)
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/auth/bearer", base), nil)
+	assert.NoError(err)
+
+	token := "that's what she said"
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+
+	client := &http.Client{}
+	resp, err = client.Do(req)
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+}

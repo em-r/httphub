@@ -18,5 +18,6 @@ type Response struct {
 
 type AuthResponse struct {
 	Authorized bool   `json:"authorized"`
-	User       string `json:"user"`
+	User       string `json:"user,omitempty"`
+	Token      string `json:"token,omitempty"`
 }
