@@ -15,3 +15,8 @@ type Response struct {
 	IP        string                 `json:"ip,omitempty"`
 	UserAgent string                 `json:"user-agent,omitempty"`
 }
+
+type AuthResponse struct {
+	Authorized bool   `json:"authorized"`
+	User       string `json:"user"`
+}

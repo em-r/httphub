@@ -24,14 +24,17 @@ func New() http.Handler {
 	handler.HandleFunc("/delete", ViewDelete).Methods("delete")
 	handler.HandleFunc("/any", ViewAny)
 
-	// User Handlers
+	// Request inspection Handlers
 	handler.HandleFunc("/request", ViewRequest).Methods("GET")
 	handler.HandleFunc("/ip", ViewIP).Methods("GET")
 	handler.HandleFunc("/user-agent", ViewUserAgent).Methods("GET")
 	handler.HandleFunc("/headers", ViewHeaders).Methods("GET")
 
-	// status codes handlers
+	// Status codes handlers
 	handler.HandleFunc("/status/{code}", ViewStatusCodes)
+
+	// Auth handlers
+	handler.HandleFunc("/auth/basic/{user}/{passwd}", ViewBasicAuth)
 
 	return handler
 }

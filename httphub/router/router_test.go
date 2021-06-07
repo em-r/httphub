@@ -285,3 +285,23 @@ func TestStatusCodes(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusBadRequest, resp.StatusCode)
 }
+
+func TestBasicAuth(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	user, passwd := "mehdi", "whatever"
+	resp, err := http.Get(fmt.Sprintf("%s/auth/basic/%s/%s", base, user, passwd))
+	assert.NoError(err)
+	assert.Equal(http.StatusUnauthorized, resp.StatusCode)
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/auth/basic/%s/%s", base, user, passwd), nil)
+	assert.NoError(err)
+	req.SetBasicAuth(user, passwd)
+
+	client := &http.Client{}
+	resp, err = client.Do(req)
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+}

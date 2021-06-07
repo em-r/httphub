@@ -14,7 +14,7 @@ func ViewRequest(w http.ResponseWriter, r *http.Request) {
 	// produces:
 	// - application/json
 	//
-	// summary: The user's information.
+	// summary: The request's information.
 	//
 	// schemes:
 	// - http
