@@ -3,6 +3,9 @@ package router
 import (
 	"encoding/json"
 	"net/http"
+	"time"
+
+	"github.com/ElMehdi19/httphub/httphub/helpers"
 )
 
 func ViewResponseHeader(w http.ResponseWriter, r *http.Request) {
@@ -38,4 +41,47 @@ func ViewResponseHeader(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(w.Header())
+}
+
+func ViewCache(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /cache Response
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Returns a 304 if an If-Modified-Since header or If-None-Match is present. Otherwise returns 200.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response inspection
+	//
+	// parameters:
+	// - in: headers
+	//   name: if-Modified-Since
+	//   required: false
+	//
+	// - in: headers
+	//   name: If-None-Match
+	//   required: false
+	//
+	// responses:
+	//   '200':
+	//     description: Cached response.
+	//   '304':
+	//     description: Modified.
+
+	if r.Header.Get("If-Modified-Since") == "" && r.Header.Get("If-None-Match") == "" {
+		httpDate := time.Now().Format("Mon 02-Jan-2006 15:04:05 GMT")
+		w.Header().Set("Date", httpDate)
+		w.Header().Set("Content-Location", r.URL.Path)
+		w.Header().Set("Etag", helpers.RandomStr(23))
+		ViewGet(w, r)
+		return
+	}
+
+	viewStatusCodes(w, r, http.StatusNotModified)
 }

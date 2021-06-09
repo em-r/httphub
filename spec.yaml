@@ -83,6 +83,28 @@ paths:
       summary: Bearer Auth protected route.
       tags:
       - Auth
+  /cache:
+    get:
+      operationId: Response
+      parameters:
+      - in: headers
+        name: if-Modified-Since
+      - in: headers
+        name: If-None-Match
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cached response.
+        "304":
+          description: Modified.
+      schemes:
+      - http
+      - https
+      summary: Returns a 304 if an If-Modified-Since header or If-None-Match is present.
+        Otherwise returns 200.
+      tags:
+      - Response inspection
   /delete:
     delete:
       operationId: postRequest

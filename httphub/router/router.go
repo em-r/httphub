@@ -40,6 +40,7 @@ func New() http.Handler {
 
 	// Response inspection handlers
 	handler.HandleFunc("/response-headers", ViewResponseHeader).Methods("GET")
+	handler.HandleFunc("/cache", ViewCache).Methods("GET")
 
 	return handler
 }

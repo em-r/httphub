@@ -370,3 +370,13 @@ func TestResponseHeaders(t *testing.T) {
 		assert.Equal(val, arg, body)
 	}
 }
+
+func TestCache(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/cache", base))
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+}
