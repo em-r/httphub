@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"math/rand"
 	"reflect"
 	"testing"
 
@@ -41,4 +42,10 @@ func TestFlatten(t *testing.T) {
 		})
 	}
 
+}
+
+func TestRandomStr(t *testing.T) {
+	assert := assert.New(t)
+	r := rand.Intn(30)
+	assert.Len(RandomStr(r), r)
 }

@@ -1,8 +1,10 @@
 package helpers
 
 import (
+	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func IsDevMode() bool {
@@ -38,4 +40,15 @@ func Flatten(multi map[string][]string) map[string]interface{} {
 	}
 
 	return flattened
+}
+
+// Random generates a random string of numbers, uppercase and lowercase letters with
+// a fixed length.
+func RandomStr(length int) string {
+	const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
+	var sb strings.Builder
+	for i := 0; i < length; i++ {
+		sb.WriteByte(chars[rand.Intn(len(chars))])
+	}
+	return sb.String()
 }
