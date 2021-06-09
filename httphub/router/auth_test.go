@@ -61,7 +61,7 @@ func TestViewBasicAuth(t *testing.T) {
 			err = json.NewDecoder(rec.Body).Decode(&body)
 
 			assert.NoError(err)
-			assert.True(body.Authorized)
+			assert.True(body.Authenticated)
 			assert.Equal(body.User, user)
 		})
 	}
@@ -109,8 +109,23 @@ func TestViewBearerAuth(t *testing.T) {
 			err = json.NewDecoder(rec.Body).Decode(&body)
 
 			assert.NoError(err)
-			assert.True(body.Authorized)
+			assert.True(body.Authenticated)
 			assert.Equal(body.Token, tc.token)
 		})
 	}
+}
+
+func TestViewBasicAuthHidden(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000/auth/basic-hidden/x/x", nil)
+	assert.NoError(err)
+
+	rec := httptest.NewRecorder()
+	viewBasicAuthHidden(rec, req, "x", "x")
+	assert.Equal(http.StatusNotFound, rec.Result().StatusCode)
+
+	req.SetBasicAuth("x", "x")
+	rec = httptest.NewRecorder()
+	viewBasicAuthHidden(rec, req, "x", "x")
+	assert.Equal(http.StatusOK, rec.Result().StatusCode)
 }

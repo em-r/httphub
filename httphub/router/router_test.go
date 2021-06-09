@@ -326,3 +326,23 @@ func TestBearerAuth(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 }
+
+func TestBasicAuthHidden(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	user, passwd := "mehdi", "whatever"
+	resp, err := http.Get(fmt.Sprintf("%s/auth/basic-hidden/%s/%s", base, user, passwd))
+	assert.NoError(err)
+	assert.Equal(http.StatusNotFound, resp.StatusCode)
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/auth/basic-hidden/%s/%s", base, user, passwd), nil)
+	assert.NoError(err)
+	req.SetBasicAuth(user, passwd)
+
+	client := &http.Client{}
+	resp, err = client.Do(req)
+	assert.NoError(err)
+	assert.Equal(http.StatusOK, resp.StatusCode)
+}

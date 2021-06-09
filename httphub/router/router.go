@@ -35,6 +35,7 @@ func New() http.Handler {
 
 	// Auth handlers
 	handler.HandleFunc("/auth/basic/{user}/{passwd}", ViewBasicAuth)
+	handler.HandleFunc("/auth/basic-hidden/{user}/{passwd}", ViewBasicAuthHidden)
 	handler.HandleFunc("/auth/bearer", ViewBearerAuth)
 
 	return handler

@@ -19,8 +19,8 @@ func viewBasicAuth(w http.ResponseWriter, r *http.Request, user, passwd string) 
 	}
 
 	resp := structs.AuthResponse{
-		Authorized: true,
-		User:       user,
+		Authenticated: true,
+		User:          user,
 	}
 
 	json.NewEncoder(w).Encode(resp)
@@ -66,6 +66,60 @@ func ViewBasicAuth(w http.ResponseWriter, r *http.Request) {
 	viewBasicAuth(w, r, user, passwd)
 }
 
+func viewBasicAuthHidden(w http.ResponseWriter, r *http.Request, user, passwd string) {
+	username, password, ok := r.BasicAuth()
+	if !ok || username != user || password != passwd {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	resp := structs.AuthResponse{
+		Authenticated: true,
+		User:          user,
+	}
+
+	json.NewEncoder(w).Encode(resp)
+}
+
+func ViewBasicAuthHidden(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /auth/basic-auth/{user}/{passwd} Auth
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Basic Auth protected route.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Auth
+	//
+	// parameters:
+	// - in: path
+	//   name: user
+	//   description: username
+	//   required: false
+	//
+	// - in: path
+	//   name: passwd
+	//   description: password
+	//   required: false
+	//
+	// responses:
+	//   '200':
+	//     description: Successful authentication
+	//   '404':
+	//     description: Unsuccessful authentication
+	v := mux.Vars(r)
+	user := v["user"]
+	passwd := v["passwd"]
+
+	viewBasicAuthHidden(w, r, user, passwd)
+}
+
 func ViewBearerAuth(w http.ResponseWriter, r *http.Request) {
 	// swagger:operation GET /auth/bearer Auth
 	//
@@ -103,8 +157,8 @@ func ViewBearerAuth(w http.ResponseWriter, r *http.Request) {
 
 	token := strings.Join(strings.Fields(authorization)[1:], " ")
 	resp := structs.AuthResponse{
-		Authorized: true,
-		Token:      token,
+		Authenticated: true,
+		Token:         token,
 	}
 
 	json.NewEncoder(w).Encode(resp)
