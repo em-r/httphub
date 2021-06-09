@@ -24,7 +24,7 @@ func New() http.Handler {
 	handler.HandleFunc("/delete", ViewDelete).Methods("delete")
 	handler.HandleFunc("/any", ViewAny)
 
-	// Request inspection Handlers
+	// Request inspection handlers
 	handler.HandleFunc("/request", ViewRequest).Methods("GET")
 	handler.HandleFunc("/ip", ViewIP).Methods("GET")
 	handler.HandleFunc("/user-agent", ViewUserAgent).Methods("GET")
@@ -34,11 +34,12 @@ func New() http.Handler {
 	handler.HandleFunc("/status/{code}", ViewStatusCodes)
 
 	// Auth handlers
-	handler.HandleFunc("/auth/basic/{user}/{passwd}", ViewBasicAuth)
-	handler.HandleFunc("/auth/basic-hidden/{user}/{passwd}", ViewBasicAuthHidden)
-	handler.HandleFunc("/auth/bearer", ViewBearerAuth)
+	handler.HandleFunc("/auth/basic/{user}/{passwd}", ViewBasicAuth).Methods("GET")
+	handler.HandleFunc("/auth/basic-hidden/{user}/{passwd}", ViewBasicAuthHidden).Methods("GET")
+	handler.HandleFunc("/auth/bearer", ViewBearerAuth).Methods("GET")
 
-	handler.HandleFunc("/response-headers", ViewResponseHeader)
+	// Response inspection handlers
+	handler.HandleFunc("/response-headers", ViewResponseHeader).Methods("GET")
 
 	return handler
 }
