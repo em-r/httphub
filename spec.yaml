@@ -195,6 +195,20 @@ paths:
       summary: The request's information.
       tags:
       - Request inspection
+  /response-headers:
+    get:
+      operationId: Response
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response headers.
+      schemes:
+      - http
+      - https
+      summary: Returns the passed query string args as headers.
+      tags:
+      - Response inspection
   /status/{code}:
     get:
       operationId: codes

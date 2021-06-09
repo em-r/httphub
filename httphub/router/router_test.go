@@ -11,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ElMehdi19/httphub/httphub/helpers"
 	"github.com/ElMehdi19/httphub/httphub/structs"
 	"github.com/stretchr/testify/assert"
 )
@@ -345,4 +346,27 @@ func TestBasicAuthHidden(t *testing.T) {
 	resp, err = client.Do(req)
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
+}
+
+func TestResponseHeaders(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	args := map[string][]string{"X": {"a", "b"}, "Y": {"c"}}
+	uri := helpers.CreateURL(base+"/response-headers", args)
+	resp, err := http.Get(uri)
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	var body map[string][]string
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+	flat := helpers.Flatten(body)
+
+	for key, arg := range helpers.Flatten(args) {
+		val, ok := flat[key]
+		assert.True(ok)
+		assert.Equal(val, arg, body)
+	}
 }
