@@ -2,10 +2,13 @@ package router
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/ElMehdi19/httphub/httphub/helpers"
+	"github.com/gorilla/mux"
 )
 
 func ViewResponseHeader(w http.ResponseWriter, r *http.Request) {
@@ -84,4 +87,49 @@ func ViewCache(w http.ResponseWriter, r *http.Request) {
 	}
 
 	viewStatusCodes(w, r, http.StatusNotModified)
+}
+
+func viewCacheControl(w http.ResponseWriter, r *http.Request, maxAge string) {
+	seconds, err := strconv.Atoi(maxAge)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Add("cache-control", "public")
+	w.Header().Add("cache-control", fmt.Sprintf("max-age=%d", seconds))
+	ViewGet(w, r)
+}
+
+func ViewCacheControl(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /cache/{value} Response
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Sets Cache-Control header for n seconds.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response inspection
+	//
+	// parameters:
+	// - in: path
+	//   name: value
+	//   required: true
+	//   type: integer
+	//
+	// responses:
+	//   '200':
+	//     description: Cached response.
+	//   '400':
+	//     description: Path variable value not an integer.
+
+	v := mux.Vars(r)
+	maxAge := v["value"]
+	viewCacheControl(w, r, maxAge)
 }

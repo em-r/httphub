@@ -105,6 +105,27 @@ paths:
         Otherwise returns 200.
       tags:
       - Response inspection
+  /cache/{value}:
+    get:
+      operationId: Response
+      parameters:
+      - in: path
+        name: value
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cached response.
+        "400":
+          description: Path variable value not an integer.
+      schemes:
+      - http
+      - https
+      summary: Sets Cache-Control header for n seconds.
+      tags:
+      - Response inspection
   /delete:
     delete:
       operationId: postRequest

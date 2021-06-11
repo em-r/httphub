@@ -380,3 +380,24 @@ func TestCache(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, resp.StatusCode)
 }
+
+func TestCacheControl(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/cache/1", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+	assert.Equal(http.StatusOK, resp.StatusCode)
+
+	var body structs.Response
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+	assert.NotEmpty(body.Headers)
+	assert.NotEmpty(body.URL)
+
+	resp, err = http.Get(fmt.Sprintf("%s/cache/xx", base))
+	assert.NoError(err)
+	assert.Equal(http.StatusBadRequest, resp.StatusCode)
+}
