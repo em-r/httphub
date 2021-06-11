@@ -1,8 +1,10 @@
 package router
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -400,4 +402,18 @@ func TestCacheControl(t *testing.T) {
 	resp, err = http.Get(fmt.Sprintf("%s/cache/xx", base))
 	assert.NoError(err)
 	assert.Equal(http.StatusBadRequest, resp.StatusCode)
+}
+
+func TestJSONResponse(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/json", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+	assert.Equal("application/json", resp.Header.Get("content-type"))
+	buf := bytes.NewBuffer(nil)
+	io.Copy(buf, resp.Body)
+	assert.Equal(helpers.JSONDoc, buf.String())
 }

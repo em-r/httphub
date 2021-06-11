@@ -133,3 +133,26 @@ func ViewCacheControl(w http.ResponseWriter, r *http.Request) {
 	maxAge := v["value"]
 	viewCacheControl(w, r, maxAge)
 }
+
+func ViewJSONResponse(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /json Response
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Returns a JSON document.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response formats
+	//
+	// responses:
+	//   '200':
+	//     description: JSON document.
+
+	w.Write([]byte(helpers.JSONDoc))
+}

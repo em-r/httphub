@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ElMehdi19/httphub/httphub/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -40,4 +41,14 @@ func TestViewCacheControl(t *testing.T) {
 	rec = httptest.NewRecorder()
 	viewCacheControl(rec, req, "xx")
 	assert.Equal(http.StatusBadRequest, rec.Result().StatusCode)
+}
+
+func TestViewJSONResponse(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000", nil)
+	assert.NoError(err)
+
+	rec := httptest.NewRecorder()
+	ViewJSONResponse(rec, req)
+	assert.Equal(helpers.JSONDoc, rec.Body.String())
 }

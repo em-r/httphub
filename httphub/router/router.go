@@ -43,5 +43,8 @@ func New() http.Handler {
 	handler.HandleFunc("/cache", ViewCache).Methods("GET")
 	handler.HandleFunc("/cache/{value}", ViewCacheControl).Methods("GET")
 
+	// Response formats handlers
+	handler.HandleFunc("/json", ViewJSONResponse).Methods("GET")
+
 	return handler
 }
