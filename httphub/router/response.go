@@ -156,3 +156,27 @@ func ViewJSONResponse(w http.ResponseWriter, r *http.Request) {
 
 	w.Write([]byte(helpers.JSONDoc))
 }
+
+func ViewXMLResponse(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /xml Response
+	//
+	// ---
+	// produces:
+	// - application/xml
+	//
+	// summary: Returns a XML document.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response formats
+	//
+	// responses:
+	//   '200':
+	//     description: XML document.
+
+	w.Header().Set("content-type", "application/xml")
+	w.Write([]byte(helpers.XMLDoc))
+}

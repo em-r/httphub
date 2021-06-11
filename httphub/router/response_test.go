@@ -52,3 +52,14 @@ func TestViewJSONResponse(t *testing.T) {
 	ViewJSONResponse(rec, req)
 	assert.Equal(helpers.JSONDoc, rec.Body.String())
 }
+
+func TestViewXMLResponse(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000", nil)
+	assert.NoError(err)
+
+	rec := httptest.NewRecorder()
+	ViewXMLResponse(rec, req)
+	assert.Equal("application/xml", rec.Header().Get("content-type"))
+	assert.Equal(helpers.XMLDoc, rec.Body.String())
+}

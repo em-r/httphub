@@ -417,3 +417,17 @@ func TestJSONResponse(t *testing.T) {
 	io.Copy(buf, resp.Body)
 	assert.Equal(helpers.JSONDoc, buf.String())
 }
+
+func TestXMLResponse(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/xml", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+	assert.Equal("application/xml", resp.Header.Get("content-type"))
+	buf := bytes.NewBuffer(nil)
+	io.Copy(buf, resp.Body)
+	assert.Equal(helpers.XMLDoc, buf.String())
+}
