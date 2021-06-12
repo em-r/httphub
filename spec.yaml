@@ -168,6 +168,20 @@ paths:
       summary: The request's headers.
       tags:
       - Request inspection
+  /html:
+    get:
+      operationId: Response
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML document.
+      schemes:
+      - http
+      - https
+      summary: Returns a HTML document.
+      tags:
+      - Response formats
   /ip:
     get:
       operationId: Request
@@ -182,6 +196,20 @@ paths:
       summary: The request's origin.
       tags:
       - Request inspection
+  /json:
+    get:
+      operationId: Response
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JSON document.
+      schemes:
+      - http
+      - https
+      summary: Returns a JSON document.
+      tags:
+      - Response formats
   /patch:
     patch:
       operationId: postRequest
@@ -294,6 +322,20 @@ paths:
       summary: The request's user-agent.
       tags:
       - Request inspection
+  /xml:
+    get:
+      operationId: Response
+      produces:
+      - application/xml
+      responses:
+        "200":
+          description: XML document.
+      schemes:
+      - http
+      - https
+      summary: Returns a XML document.
+      tags:
+      - Response formats
 produces:
 - application/json
 - text/html

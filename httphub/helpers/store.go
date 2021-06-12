@@ -25,3 +25,27 @@ var XMLDoc = `<?xml version='1.0' encoding='us-ascii'?>
 		<email xlink:type="simple" xlink:href="mailto:mehdi@httphub.io">contact</email>
 	</me>	
 `
+
+var HTMLDoc = `
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Sample HTML doc</title>
+	</head>
+	<body>
+		<h1>About</h1>
+		<ul>
+			<li><h2>name: mehdi</h2></li>
+			<li><h2>from: 33°25'17.0"N 7°50'32.6"W</h2></li>
+		</ul>
+		<h1>Links</h1>
+		<ul>
+			<li><h2>github <a href="https://github.com/ElMehdi19">https://github.com/ElMehdi19</a></h2></li>
+			<li><h2>medium <a href="https://iammehdi.medium.com">https://iammehdi.medium.com</a></h2></li>
+			<li><h2>linkedin <a href="https://www.linkedin.com/in/el-mehdi-rami">https://www.linkedin.com/in/el-mehdi-rami</a></h2></li>
+			<li><h2>personal <a href="https://mehdi.codes">https://mehdi.codes</a></h2></li>
+		</ul>
+		<h1>contact <a href="mailto:mehdi@httphub.io">mehdi@httphub.io</a></h1>
+	</body>
+</html>
+`

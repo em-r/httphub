@@ -431,3 +431,17 @@ func TestXMLResponse(t *testing.T) {
 	io.Copy(buf, resp.Body)
 	assert.Equal(helpers.XMLDoc, buf.String())
 }
+
+func TestHTMLResponse(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/html", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+	assert.Equal("text/html", resp.Header.Get("content-type"))
+	buf := bytes.NewBuffer(nil)
+	io.Copy(buf, resp.Body)
+	assert.Equal(helpers.HTMLDoc, buf.String())
+}

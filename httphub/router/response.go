@@ -180,3 +180,27 @@ func ViewXMLResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/xml")
 	w.Write([]byte(helpers.XMLDoc))
 }
+
+func ViewHTMLResponse(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /html Response
+	//
+	// ---
+	// produces:
+	// - text/html
+	//
+	// summary: Returns a HTML document.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response formats
+	//
+	// responses:
+	//   '200':
+	//     description: HTML document.
+
+	w.Header().Set("content-type", "text/html")
+	w.Write([]byte(helpers.HTMLDoc))
+}
