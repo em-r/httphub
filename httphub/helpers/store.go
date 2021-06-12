@@ -2,7 +2,7 @@ package helpers
 
 var JSONDoc = `{
 	"whoami": "mehdi",
-	"where": "33.6031505,-7.49227239",
+	"where": "33°25'17.0''N 7°50'32.6''W",
 	"links": {
 		"github": "https://github.com/ElMehdi19",
 		"medium": "https://iammehdi.medium.com",
@@ -14,8 +14,8 @@ var JSONDoc = `{
 
 var XMLDoc = `<?xml version='1.0' encoding='us-ascii'?>
 	<me xmlns:xlink="http://www.w3.org/1999/xlink">	
-		<whoami>xx</whoami>
-		<where>xx</where>
+		<whoami>mehdi</whoami>
+		<from>33°25'17.0"N 7°50'32.6"W</from>
 		<links>
 			<link xlink:type="simple" xlink:href="https://github.com/ElMehdi19">github</link>	
 			<link xlink:type="simple" xlink:href="https://iammehdi.medium.com">medium</link>	
