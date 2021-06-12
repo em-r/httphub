@@ -12,17 +12,16 @@ var JSONDoc = `{
 	"email": "mehdi@httphub.io"
 }`
 
-var XMLDoc = `
-<?xml version='1.0' encoding='us-ascii'?>
-  <me>
-	<whoami></whoami>
-	<where></where>
-	<links>
-		<link xlink:type="simple" xlink:href="https://github.com/ElMehdi19">github</link>	
-		<link xlink:type="simple" xlink:href="https://iammehdi.medium.com">github</link>	
-		<link xlink:type="simple" xlink:href="https://www.linkedin.com/in/el-mehdi-rami">linkedin</link>	
-		<link xlink:type="simple" xlink:href="https://mehdi.codes">personal</link>	
-	</links>
-	<email xlink:type="simple" xlink:href="mailto:mehdi@httphub.io"></email>
-  </me>	
+var XMLDoc = `<?xml version='1.0' encoding='us-ascii'?>
+	<me xmlns:xlink="http://www.w3.org/1999/xlink">	
+		<whoami>xx</whoami>
+		<where>xx</where>
+		<links>
+			<link xlink:type="simple" xlink:href="https://github.com/ElMehdi19">github</link>	
+			<link xlink:type="simple" xlink:href="https://iammehdi.medium.com">medium</link>	
+			<link xlink:type="simple" xlink:href="https://www.linkedin.com/in/el-mehdi-rami">linkedin</link>	
+			<link xlink:type="simple" xlink:href="https://mehdi.codes">personal</link>	
+		</links>
+		<email xlink:type="simple" xlink:href="mailto:mehdi@httphub.io">contact</email>
+	</me>	
 `
