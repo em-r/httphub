@@ -47,6 +47,7 @@ func New() http.Handler {
 	handler.HandleFunc("/json", ViewJSONResponse).Methods("GET")
 	handler.HandleFunc("/xml", ViewXMLResponse).Methods("GET")
 	handler.HandleFunc("/html", ViewHTMLResponse).Methods("GET")
+	handler.HandleFunc("/txt", ViewTXTResponse).Methods("GET")
 
 	return handler
 }

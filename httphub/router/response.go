@@ -204,3 +204,27 @@ func ViewHTMLResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "text/html")
 	w.Write([]byte(helpers.HTMLDoc))
 }
+
+func ViewTXTResponse(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /txt Response
+	//
+	// ---
+	// produces:
+	// - text/plain
+	//
+	// summary: Returns a plain text document.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Response formats
+	//
+	// responses:
+	//   '200':
+	//     description: Plain text document.
+
+	w.Header().Set("content-type", "text/plain")
+	w.Write([]byte(helpers.TXTDoc))
+}

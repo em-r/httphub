@@ -308,6 +308,20 @@ paths:
       summary: Return the given status code
       tags:
       - Status codes
+  /txt:
+    get:
+      operationId: Response
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Plain text document.
+      schemes:
+      - http
+      - https
+      summary: Returns a plain text document.
+      tags:
+      - Response formats
   /user-agent:
     get:
       operationId: Request

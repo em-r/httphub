@@ -74,3 +74,14 @@ func TestViewHTMLResponse(t *testing.T) {
 	assert.Equal("text/html", rec.Header().Get("content-type"))
 	assert.Equal(helpers.HTMLDoc, rec.Body.String())
 }
+
+func TestViewTXTResponse(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000", nil)
+	assert.NoError(err)
+
+	rec := httptest.NewRecorder()
+	ViewTXTResponse(rec, req)
+	assert.Equal("text/plain", rec.Header().Get("content-type"))
+	assert.Equal(helpers.TXTDoc, rec.Body.String())
+}
