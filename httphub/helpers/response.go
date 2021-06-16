@@ -45,6 +45,12 @@ func parseBody(r *http.Request, resp *structs.Response) {
 	}
 }
 
+func parseCookies(r *http.Request, resp *structs.Response) {
+	for _, c := range r.Cookies() {
+		resp.Cookies[c.Name] = c.Value
+	}
+}
+
 // MakeResponse creates and returns a structs.HTTPMethodsResponse
 // instance populated with the field names passed on the want variadic param.
 func MakeResponse(r *http.Request, want ...string) structs.Response {
@@ -81,6 +87,8 @@ func MakeResponse(r *http.Request, want ...string) structs.Response {
 			resp.IP = strings.Split(r.RemoteAddr, ":")[0]
 		case "user-agent":
 			resp.UserAgent = r.Header.Get("user-agent")
+		case "cookies":
+			parseCookies(r, &resp)
 		}
 	}
 

@@ -14,6 +14,7 @@ type Response struct {
 	Method    string                 `json:"method,omitempty"`
 	IP        string                 `json:"ip,omitempty"`
 	UserAgent string                 `json:"user-agent,omitempty"`
+	Cookies   map[string]interface{} `json:"cookies,omitempty"`
 }
 
 type AuthResponse struct {

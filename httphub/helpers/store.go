@@ -50,14 +50,4 @@ var HTMLDoc = `
 </html>
 `
 
-var TXTDoc = `
-H      H TTTTTTTTTTTTT TTTTTTTTTTTTT PPPPPP	 	 H      H	U		   U  BBBBBB
-H	   H	   T	   	     T	 	 P	   P	 H	    H	U		   U  B     B
-H	   H	   T	   	     T	 	 P		P	 H	    H 	U		   U  B      B
-H	   H	   T			 T		 P	   P	 H	    H	U		   U  B     B
-HHHHHHHH	   T	   		 T		 PPPPPP		 HHHHHHHH	U		   U  BBBBBB
-H      H	   T		     T		 P			 H	    H	U		   U  B     B
-H	   H	   T			 T		 P			 H	    H	 U		  U   B      B
-H	   H	   T			 T		 P			 H	    H	  U		 U    B     B
-H	   H	   T			 T       P			 H	    H	   UUUUUU     BBBBBB
-`
+var TXTDoc = `TXT DOC SERVED BY HTTPHUB`

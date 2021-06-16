@@ -459,3 +459,17 @@ func TestTXTResponse(t *testing.T) {
 	io.Copy(buf, resp.Body)
 	assert.Equal(helpers.TXTDoc, buf.String())
 }
+
+func TestCookies(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	resp, err := http.Get(fmt.Sprintf("%s/cookies", base))
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	var body map[string]interface{}
+	json.NewDecoder(resp.Body).Decode(&body)
+	assert.Empty(body)
+}

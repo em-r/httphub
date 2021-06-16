@@ -49,5 +49,8 @@ func New() http.Handler {
 	handler.HandleFunc("/html", ViewHTMLResponse).Methods("GET")
 	handler.HandleFunc("/txt", ViewTXTResponse).Methods("GET")
 
+	// Cookies handlers
+	handler.HandleFunc("/cookies", ViewCookies).Methods("GET")
+
 	return handler
 }
