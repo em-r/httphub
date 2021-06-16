@@ -473,3 +473,28 @@ func TestCookies(t *testing.T) {
 	json.NewDecoder(resp.Body).Decode(&body)
 	assert.Empty(body)
 }
+
+func TestSetCookies(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	args := map[string][]string{
+		"x": {"1"},
+		"y": {"2"},
+	}
+
+	uri := helpers.CreateURL(fmt.Sprintf("%s/cookies/set", base), args)
+	resp, err := http.Get(uri)
+	assert.NoError(err)
+	defer resp.Body.Close()
+
+	cookies := helpers.Flatten(args)
+	for _, c := range resp.Cookies() {
+		cookie, ok := cookies[c.Name]
+		assert.True(ok)
+		assert.Equal(cookie, c.Value)
+	}
+
+	TestCookies(t)
+}

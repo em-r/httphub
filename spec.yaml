@@ -126,6 +126,34 @@ paths:
       summary: Sets Cache-Control header for n seconds.
       tags:
       - Response inspection
+  /cookies:
+    get:
+      operationId: Cookies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cookie data.
+      schemes:
+      - http
+      - https
+      summary: Cookie data.
+      tags:
+      - Cookies
+  /cookies/set:
+    get:
+      operationId: Cookies
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Sets cookie data and redirects to /cookies.
+      schemes:
+      - http
+      - https
+      summary: Sets cookie data and redirects to /cookies.
+      tags:
+      - Cookies
   /delete:
     delete:
       operationId: postRequest
