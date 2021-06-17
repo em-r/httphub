@@ -46,6 +46,7 @@ func parseBody(r *http.Request, resp *structs.Response) {
 }
 
 func parseCookies(r *http.Request, resp *structs.Response) {
+	resp.Cookies = map[string]interface{}{}
 	for _, c := range r.Cookies() {
 		resp.Cookies[c.Name] = c.Value
 	}
@@ -55,7 +56,7 @@ func parseCookies(r *http.Request, resp *structs.Response) {
 // instance populated with the field names passed on the want variadic param.
 func MakeResponse(r *http.Request, want ...string) structs.Response {
 	var resp structs.Response
-	keys := []string{"url", "headers", "args", "method", "body", "origin", "form", "ip", "user-agent"}
+	keys := []string{"url", "headers", "args", "method", "body", "origin", "form", "ip", "user-agent", "cookies"}
 	isValid := func(field string) bool {
 		for _, key := range keys {
 			if key == field {
