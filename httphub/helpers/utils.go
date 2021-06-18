@@ -12,11 +12,12 @@ var PORT int = 5000
 var HOST string
 
 func init() {
-	if IsDevMode() {
-		HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
-	} else {
-		HOST = "httphub.io"
-	}
+	HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
+	// if IsDevMode() {
+	// 	HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
+	// } else {
+	// 	HOST = "httphub.io"
+	// }
 }
 
 func IsDevMode() bool {

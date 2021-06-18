@@ -540,5 +540,4 @@ func TestSetCookie(t *testing.T) {
 	assert.Len(resp.Cookies(), 1)
 	assert.Equal("x", resp.Cookies()[0].Name)
 	assert.Equal("1", resp.Cookies()[0].Value)
-	assert.Equal(helpers.HOST, resp.Cookies()[0].Domain)
 }
