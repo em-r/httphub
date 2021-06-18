@@ -46,3 +46,14 @@ func TestViewSetCookies(t *testing.T) {
 		assert.Equal(cookie, c.Value)
 	}
 }
+
+func TestViewSetCookie(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000", nil)
+	assert.NoError(err)
+
+	rec := httptest.NewRecorder()
+	ViewSetCookie(rec, req)
+
+	assert.Equal(http.StatusFound, rec.Result().StatusCode)
+}

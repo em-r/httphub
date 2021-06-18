@@ -460,6 +460,22 @@ func TestTXTResponse(t *testing.T) {
 	assert.Equal(helpers.TXTDoc, buf.String())
 }
 
+func checkCookies(t *testing.T, r io.ReadCloser, from map[string]interface{}) {
+	assert := assert.New(t)
+	if r == nil {
+		if from != nil {
+			assert.FailNow("reader shouldn't be nil")
+		}
+		return
+	}
+
+	defer r.Close()
+	var body map[string]interface{}
+	json.NewDecoder(r).Decode(&body)
+
+	assert.Equal(fmt.Sprintf("%v", from), fmt.Sprintf("%v", body))
+}
+
 func TestCookies(t *testing.T) {
 	assert := assert.New(t)
 	base, tearDown := setUpTestServer()
@@ -469,9 +485,7 @@ func TestCookies(t *testing.T) {
 	assert.NoError(err)
 	defer resp.Body.Close()
 
-	var body map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&body)
-	assert.Empty(body)
+	checkCookies(t, nil, nil)
 }
 
 func TestSetCookies(t *testing.T) {
@@ -485,9 +499,18 @@ func TestSetCookies(t *testing.T) {
 	}
 
 	uri := helpers.CreateURL(fmt.Sprintf("%s/cookies/set", base), args)
-	resp, err := http.Get(uri)
+	req, err := http.NewRequest("GET", uri, nil)
 	assert.NoError(err)
-	defer resp.Body.Close()
+
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+	resp, err := client.Do(req)
+	assert.NoError(err)
+
+	assert.Len(resp.Cookies(), 2)
 
 	cookies := helpers.Flatten(args)
 	for _, c := range resp.Cookies() {
@@ -495,6 +518,27 @@ func TestSetCookies(t *testing.T) {
 		assert.True(ok)
 		assert.Equal(cookie, c.Value)
 	}
+}
 
-	TestCookies(t)
+func TestSetCookie(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/cookies/set/x/1", base), nil)
+	assert.NoError(err)
+
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	resp, err := client.Do(req)
+	assert.NoError(err)
+
+	assert.Len(resp.Cookies(), 1)
+	assert.Equal("x", resp.Cookies()[0].Name)
+	assert.Equal("1", resp.Cookies()[0].Value)
+	assert.Equal(helpers.HOST, resp.Cookies()[0].Domain)
 }

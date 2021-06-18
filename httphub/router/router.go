@@ -52,6 +52,7 @@ func New() http.Handler {
 	// Cookies handlers
 	handler.HandleFunc("/cookies", ViewCookies).Methods("GET")
 	handler.HandleFunc("/cookies/set", ViewSetCookies).Methods("GET")
+	handler.HandleFunc("/cookies/set/{name}/{value}", ViewSetCookie).Methods("GET")
 
 	return handler
 }
