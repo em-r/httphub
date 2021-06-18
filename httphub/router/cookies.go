@@ -48,16 +48,21 @@ func ViewSetCookies(w http.ResponseWriter, r *http.Request) {
 	// tags:
 	// - Cookies
 	//
+	// parameters:
+	// - in: query
+	//   name: whoami
+	//   required: true
+	//   type: string
+	//
 	// responses:
 	//   '302':
 	//     description: Sets cookie data and redirects to /cookies.
 
 	for key, vals := range r.URL.Query() {
 		c := http.Cookie{
-			Name:   key,
-			Value:  vals[0],
-			Path:   "/",
-			Domain: helpers.HOST,
+			Name:  key,
+			Value: vals[0],
+			Path:  "/",
 		}
 		http.SetCookie(w, &c)
 	}
@@ -65,12 +70,41 @@ func ViewSetCookies(w http.ResponseWriter, r *http.Request) {
 }
 
 func ViewSetCookie(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /cookies/set/{name}/{value} Cookies
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Sets cookie data and redirects to /cookies.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Cookies
+	//
+	// parameters:
+	// - in: path
+	//   name: name
+	//   required: true
+	//   type: string
+	//
+	// - in: path
+	//   name: value
+	//   required: true
+	//   type: string
+	//
+	// responses:
+	//   '302':
+	//     description: Sets cookie data and redirects to /cookies.
+
 	v := mux.Vars(r)
 	http.SetCookie(w, &http.Cookie{
-		Name:   v["name"],
-		Value:  v["value"],
-		Path:   "/",
-		Domain: helpers.HOST,
+		Name:  v["name"],
+		Value: v["value"],
+		Path:  "/",
 	})
 	http.Redirect(w, r, "/cookies", http.StatusFound)
 }

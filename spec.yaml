@@ -143,6 +143,34 @@ paths:
   /cookies/set:
     get:
       operationId: Cookies
+      parameters:
+      - in: query
+        name: whoami
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Sets cookie data and redirects to /cookies.
+      schemes:
+      - http
+      - https
+      summary: Sets cookie data and redirects to /cookies.
+      tags:
+      - Cookies
+  /cookies/set/{name}/{value}:
+    get:
+      operationId: Cookies
+      parameters:
+      - in: path
+        name: name
+        required: true
+        type: string
+      - in: path
+        name: value
+        required: true
+        type: string
       produces:
       - application/json
       responses:
