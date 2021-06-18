@@ -1,11 +1,23 @@
 package helpers
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
 )
+
+var PORT int = 5000
+var HOST string
+
+func init() {
+	if IsDevMode() {
+		HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
+	} else {
+		HOST = "httphub.io"
+	}
+}
 
 func IsDevMode() bool {
 	env, ok := os.LookupEnv("DEV_MODE")
