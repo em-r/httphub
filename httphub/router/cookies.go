@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ElMehdi19/httphub/httphub/helpers"
+	"github.com/gorilla/mux"
 )
 
 func ViewCookies(w http.ResponseWriter, r *http.Request) {
@@ -53,10 +54,23 @@ func ViewSetCookies(w http.ResponseWriter, r *http.Request) {
 
 	for key, vals := range r.URL.Query() {
 		c := http.Cookie{
-			Name:  key,
-			Value: vals[0],
+			Name:   key,
+			Value:  vals[0],
+			Path:   "/",
+			Domain: helpers.HOST,
 		}
 		http.SetCookie(w, &c)
 	}
+	http.Redirect(w, r, "/cookies", http.StatusFound)
+}
+
+func ViewSetCookie(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	http.SetCookie(w, &http.Cookie{
+		Name:   v["name"],
+		Value:  v["value"],
+		Path:   "/",
+		Domain: helpers.HOST,
+	})
 	http.Redirect(w, r, "/cookies", http.StatusFound)
 }
