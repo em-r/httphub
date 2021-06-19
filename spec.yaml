@@ -140,6 +140,25 @@ paths:
       summary: Cookie data.
       tags:
       - Cookies
+  /cookies/delete:
+    get:
+      operationId: Cookies
+      parameters:
+      - in: query
+        name: names
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Deletes cookie data and redirects to /cookies.
+      schemes:
+      - http
+      - https
+      summary: Deletes cookies specified in query args and redirects to /cookies.
+      tags:
+      - Cookies
   /cookies/set:
     get:
       operationId: Cookies

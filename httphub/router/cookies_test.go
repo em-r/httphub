@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/ElMehdi19/httphub/httphub/structs"
 	"github.com/stretchr/testify/assert"
@@ -56,4 +57,26 @@ func TestViewSetCookie(t *testing.T) {
 	ViewSetCookie(rec, req)
 
 	assert.Equal(http.StatusFound, rec.Result().StatusCode)
+}
+
+func TestViewDeleteCookies(t *testing.T) {
+	assert := assert.New(t)
+	req, err := http.NewRequest("GET", "http://127.0.0.1:5000/set?names=x", nil)
+	assert.NoError(err)
+	req.AddCookie(&http.Cookie{
+		Name:  "x",
+		Value: "1",
+	})
+
+	rec := httptest.NewRecorder()
+	ViewDeleteCookies(rec, req)
+
+	assert.Equal(http.StatusFound, rec.Result().StatusCode)
+
+	cookies := rec.Result().Cookies()
+	assert.Len(cookies, 1)
+
+	c := cookies[0]
+	assert.Equal("x", c.Name)
+	assert.True(c.Expires.Before(time.Now()))
 }

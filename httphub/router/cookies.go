@@ -3,6 +3,8 @@ package router
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/ElMehdi19/httphub/httphub/helpers"
 	"github.com/gorilla/mux"
@@ -106,5 +108,49 @@ func ViewSetCookie(w http.ResponseWriter, r *http.Request) {
 		Value: v["value"],
 		Path:  "/",
 	})
+	http.Redirect(w, r, "/cookies", http.StatusFound)
+}
+
+func ViewDeleteCookies(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /cookies/delete Cookies
+	//
+	// ---
+	// produces:
+	// - application/json
+	//
+	// summary: Deletes cookies specified in query args and redirects to /cookies.
+	//
+	// schemes:
+	// - http
+	// - https
+	//
+	// tags:
+	// - Cookies
+	//
+	// parameters:
+	// - in: query
+	//   name: names
+	//   required: true
+	//   type: string
+	//
+	// responses:
+	//   '302':
+	//     description: Deletes cookie data and redirects to /cookies.
+
+	names, ok := r.URL.Query()["names"]
+	if !ok {
+		http.Redirect(w, r, "/cookies", http.StatusFound)
+	}
+
+	keys := strings.Split(names[0], ",")
+
+	for _, name := range keys {
+		http.SetCookie(w, &http.Cookie{
+			Name:    name,
+			Value:   helpers.RandomStr(6),
+			Expires: time.Now(),
+			Path:    "/",
+		})
+	}
 	http.Redirect(w, r, "/cookies", http.StatusFound)
 }
