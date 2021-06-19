@@ -460,22 +460,6 @@ func TestTXTResponse(t *testing.T) {
 	assert.Equal(helpers.TXTDoc, buf.String())
 }
 
-func checkCookies(t *testing.T, r io.ReadCloser, from map[string]interface{}) {
-	assert := assert.New(t)
-	if r == nil {
-		if from != nil {
-			assert.FailNow("reader shouldn't be nil")
-		}
-		return
-	}
-
-	defer r.Close()
-	var body map[string]interface{}
-	json.NewDecoder(r).Decode(&body)
-
-	assert.Equal(fmt.Sprintf("%v", from), fmt.Sprintf("%v", body))
-}
-
 func TestCookies(t *testing.T) {
 	assert := assert.New(t)
 	base, tearDown := setUpTestServer()
@@ -485,7 +469,30 @@ func TestCookies(t *testing.T) {
 	assert.NoError(err)
 	defer resp.Body.Close()
 
-	checkCookies(t, nil, nil)
+	var body map[string]interface{}
+	err = json.NewDecoder(resp.Body).Decode(&body)
+	assert.NoError(err)
+	assert.Empty(body)
+
+	args := map[string]string{"x": "1", "y": "2"}
+	uri := fmt.Sprintf("%s/cookies/set?x=%s&y=%s", base, args["x"], args["y"])
+	req, err := http.NewRequest("GET", uri, nil)
+	assert.NoError(err)
+
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	resp, err = client.Do(req)
+	assert.NoError(err)
+
+	for _, cookie := range resp.Cookies() {
+		val, ok := args[cookie.Name]
+		assert.True(ok)
+		assert.Equal(cookie.Value, val)
+	}
 }
 
 func TestSetCookies(t *testing.T) {
