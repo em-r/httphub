@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 var PORT int = 5000
@@ -64,4 +66,33 @@ func RandomStr(length int) string {
 		sb.WriteByte(chars[rand.Intn(len(chars))])
 	}
 	return sb.String()
+}
+
+func Choose(s []string) string {
+	return s[rand.Intn(len(s))]
+}
+
+func WalkRouterGET(paths *[]string, top bool, exclude string) mux.WalkFunc {
+	return func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+		p, err := route.GetPathTemplate()
+		if err != nil {
+			return nil
+		}
+
+		if top && strings.Count(p, "/") > 1 {
+			return nil
+		}
+
+		if exclude != "" && strings.Contains(p, exclude) {
+			return nil
+		}
+
+		methods, err := route.GetMethods()
+		if err != nil || len(methods) > 1 || methods[0] != "GET" {
+			return nil
+		}
+
+		*paths = append(*paths, p)
+		return nil
+	}
 }

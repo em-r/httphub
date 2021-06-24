@@ -2,9 +2,11 @@ package helpers
 
 import (
 	"math/rand"
+	"net/http"
 	"reflect"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -48,4 +50,19 @@ func TestRandomStr(t *testing.T) {
 	assert := assert.New(t)
 	r := rand.Intn(30)
 	assert.Len(RandomStr(r), r)
+}
+
+func TestWalkRouter(t *testing.T) {
+	assert := assert.New(t)
+	handler := mux.NewRouter()
+	handlerFunc := func(w http.ResponseWriter, r *http.Request) {}
+	handler.HandleFunc("/valid", handlerFunc).Methods("GET")
+	handler.HandleFunc("/root/sub", handlerFunc).Methods("GET")
+	handler.HandleFunc("/exclude", handlerFunc).Methods("GET")
+	handler.HandleFunc("/post", handlerFunc).Methods("POST")
+
+	var paths []string
+	handler.Walk(WalkRouterGET(&paths, true, "exclude"))
+	assert.Len(paths, 1)
+	assert.Equal(paths[0], "/valid")
 }
