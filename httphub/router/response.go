@@ -188,7 +188,7 @@ func ViewHTMLResponse(w http.ResponseWriter, r *http.Request) {
 	// produces:
 	// - text/html
 	//
-	// summary: Returns a HTML document.
+	// summary: Returns an HTML document.
 	//
 	// schemes:
 	// - http

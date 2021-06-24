@@ -548,3 +548,24 @@ func TestSetCookie(t *testing.T) {
 	assert.Equal("x", resp.Cookies()[0].Name)
 	assert.Equal("1", resp.Cookies()[0].Value)
 }
+
+func TestRedirect(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/redirect/httphub.io", base), nil)
+	assert.NoError(err)
+
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	resp, err := client.Do(req)
+	assert.NoError(err)
+
+	assert.Equal(http.StatusFound, resp.StatusCode)
+	assert.Equal("http://httphub.io", resp.Header.Get("Location"))
+}

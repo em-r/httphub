@@ -55,5 +55,8 @@ func New() http.Handler {
 	handler.HandleFunc("/cookies/set/{name}/{value}", ViewSetCookie).Methods("GET")
 	handler.HandleFunc("/cookies/delete", ViewDeleteCookies).Methods("GET")
 
+	// Redirection handlers
+	handler.HandleFunc("/redirect/{to}", ViewRedirect).Methods("GET")
+
 	return handler
 }
