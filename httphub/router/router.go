@@ -8,6 +8,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var topLevelGetpaths []string
+
 func New() http.Handler {
 	handler := mux.NewRouter()
 	handler.Use(middlewares.Recover, middlewares.Logger, middlewares.JSONContent, middlewares.CORS)
@@ -57,6 +59,9 @@ func New() http.Handler {
 
 	// Redirection handlers
 	handler.HandleFunc("/redirect/{to}", ViewRedirect).Methods("GET")
+	handler.HandleFunc("/redirect", ViewRedirectRandom).Methods("GET")
+
+	handler.Walk(helpers.WalkRouterGET(&topLevelGetpaths, true, "redirect"))
 
 	return handler
 }

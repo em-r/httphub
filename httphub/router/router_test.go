@@ -569,3 +569,24 @@ func TestRedirect(t *testing.T) {
 	assert.Equal(http.StatusFound, resp.StatusCode)
 	assert.Equal("http://httphub.io", resp.Header.Get("Location"))
 }
+
+func TestRedirectRandom(t *testing.T) {
+	assert := assert.New(t)
+	base, tearDown := setUpTestServer()
+	defer tearDown()
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/redirect", base), nil)
+	assert.NoError(err)
+
+	client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	resp, err := client.Do(req)
+	assert.NoError(err)
+
+	assert.Equal(http.StatusFound, resp.StatusCode)
+	assert.Contains(topLevelGetpaths, resp.Header.Get("Location"))
+}
