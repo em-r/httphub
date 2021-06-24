@@ -22,6 +22,8 @@ func init() {
 	// }
 }
 
+// IsDevMode returns true if DEV_MODE is present in the environment variables, and set to a non
+// false value.
 func IsDevMode() bool {
 	env, ok := os.LookupEnv("DEV_MODE")
 	if !ok {
@@ -68,10 +70,17 @@ func RandomStr(length int) string {
 	return sb.String()
 }
 
+// Choose selects an element randomly from a slice and returns it.
 func Choose(s []string) string {
 	return s[rand.Intn(len(s))]
 }
 
+// WalkRouterGET takes a pointer to an empty slice, a bool and string params returns a mux.WalkFunc
+// function used to walk down the mux router.
+// The paths param slice will be populated with routers paths that match a specific criterea.
+// If top is true, only top level routes will be selected.
+// If exclude is not empty, routes that include the exclude value will be skipped.
+// WalkRouterGET currently selects only routes that accept just the GET method, hence the name.
 func WalkRouterGET(paths *[]string, top bool, exclude string) mux.WalkFunc {
 	return func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		p, err := route.GetPathTemplate()
