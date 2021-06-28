@@ -12,7 +12,7 @@ var topLevelGetpaths []string
 
 func New() http.Handler {
 	handler := mux.NewRouter()
-	handler.Use(middlewares.Recover, middlewares.Logger, middlewares.JSONContent, middlewares.CORS)
+	handler.Use(middlewares.Recover, middlewares.Logger, middlewares.ContentType, middlewares.CORS)
 
 	if helpers.IsDevMode() {
 		handler.HandleFunc("/debug", SourceCodeHandler)

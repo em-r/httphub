@@ -1,7 +1,8 @@
 package middlewares
 
 import (
-	"encoding/json"
+	// "encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,11 +14,16 @@ import (
 func setUp(middlewares ...mux.MiddlewareFunc) (string, func()) {
 	mux := mux.NewRouter()
 	mux.Use(middlewares...)
+	fn := func(w http.ResponseWriter, r *http.Request) {}
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(`{
-			"success": true
-		}`))
+	mux.HandleFunc("/", fn)
+	mux.HandleFunc("/file.js", fn)
+	mux.HandleFunc("/file.txt", fn)
+	mux.HandleFunc("/file.yaml", fn)
+	mux.HandleFunc("/swagger/", fn)
+	mux.HandleFunc("/whatever", fn)
+	mux.HandleFunc("/explicit", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("content-type", "application/xml")
 	})
 
 	server := httptest.NewServer(mux)
@@ -36,19 +42,30 @@ func TestCORS(t *testing.T) {
 	assert.Equal("*", resp.Header.Get("Access-Control-Allow-Origin"))
 }
 
-func TestJSONContent(t *testing.T) {
+func TestContentType(t *testing.T) {
 	assert := assert.New(t)
-	base, tearDown := setUp(JSONContent)
+	base, tearDown := setUp(ContentType)
 	defer tearDown()
 
-	resp, err := http.Get(base)
-	assert.NoError(err)
-	assert.Equal("application/json", resp.Header.Get("Content-Type"))
+	type testCase struct {
+		endpoint, contentType string
+	}
 
-	var body map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		s, ok := body["success"]
-		assert.True(ok)
-		assert.True(s.(bool))
+	tcs := []testCase{
+		{endpoint: "/", contentType: "text/html"},
+		{endpoint: "/swagger/", contentType: "text/html"},
+		{endpoint: "/file.js", contentType: "text/javascript"},
+		{endpoint: "/file.txt", contentType: "text/plain"},
+		{endpoint: "/file.yaml", contentType: "application/yaml"},
+		{endpoint: "/whatever", contentType: "application/json"},
+		{endpoint: "/explicit", contentType: "application/xml"},
+	}
+
+	for _, tc := range tcs {
+		t.Run(tc.endpoint, func(t *testing.T) {
+			resp, err := http.Get(fmt.Sprintf("%s/%s", base, tc.endpoint))
+			assert.NoError(err)
+			assert.Equal(tc.contentType, resp.Header.Get("content-type"))
+		})
 	}
 }

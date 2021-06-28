@@ -2,15 +2,44 @@ package middlewares
 
 import (
 	"net/http"
+	"strings"
 )
 
-// JSONContent sets the content-type header in the response object
-// to application/json.
-func JSONContent(h http.Handler) http.Handler {
+// ContentType tries to detect the appropriate content-type of the response body and sets it to
+// the Content-Type header if detected successfully, otherwise falls back to application/json
+// since most endpoints in the app are serving back JSON responses.
+func ContentType(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if w.Header().Get("content-type") == "" {
-			w.Header().Set("content-type", "application/json")
+		// check if the request is accessing a static file (e.g. Swagger UI bundles...)
+		file := strings.Split(r.URL.Path, ".")
+		if len(file) > 1 {
+			extensions := map[string]string{
+				"css":  "text/css",
+				"html": "text/html",
+				"js":   "text/javascript",
+				"txt":  "text/plain",
+				"yaml": "application/yaml",
+				"json": "application/json",
+			}
+			ext := file[len(file)-1]
+			if val, ok := extensions[ext]; ok {
+				w.Header().Set("content-type", val)
+				h.ServeHTTP(w, r)
+				return
+			}
 		}
+
+		var contentType string
+		switch {
+		// check if the request is accessing Swagger UI entry point.
+		case r.URL.Path == "/", r.URL.Path == "/swagger/":
+			contentType = "text/html"
+		// falling back to application/json for the rest of the endpoints.
+		case w.Header().Get("content-type") == "":
+			contentType = "application/json"
+		}
+
+		w.Header().Set("content-type", contentType)
 		h.ServeHTTP(w, r)
 	})
 }
