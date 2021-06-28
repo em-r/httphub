@@ -63,5 +63,9 @@ func New() http.Handler {
 
 	handler.Walk(helpers.WalkRouterGET(&topLevelGetpaths, true, "redirect"))
 
+	// Swagger UI
+	handler.Handle("/swagger/{file}", http.StripPrefix("/swagger/", SwaggerUI()))
+	handler.Handle("/", http.StripPrefix("/", SwaggerUI()))
+
 	return handler
 }

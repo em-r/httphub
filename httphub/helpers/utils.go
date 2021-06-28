@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"fmt"
 	"math/rand"
 	"os"
 	"strconv"
@@ -11,16 +10,6 @@ import (
 )
 
 var PORT int = 5000
-var HOST string
-
-func init() {
-	HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
-	// if IsDevMode() {
-	// 	HOST = fmt.Sprintf("127.0.0.1:%d", PORT)
-	// } else {
-	// 	HOST = "httphub.io"
-	// }
-}
 
 // IsDevMode returns true if DEV_MODE is present in the environment variables, and set to a non
 // false value.
