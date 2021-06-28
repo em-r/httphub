@@ -1,7 +1,9 @@
 // Package classification HTTPHub
 //
 // An HTTP Request/Response service fully written in Go.<br>
-// <b>Run locally</b>: <code>$ docker run -p 5000:5000 iammehdi/httphub</code>
+// <b>Run locally</b>: <code>$ docker run -p 5000:5000 iammehdi/httphub</code><br>
+// Inspired from Python's <a href="http://httpbin.org" target="blank">httpbin</a> by <a href="https://kenreitz.org/" target="blank">Kenneth Reitz</a>.
+// Special thanks to <a href="https://developer.mozilla.org/" target="blank">MDN</a> for their amazing docs.
 //
 //     Schemes: http, https
 //     Host: localhost:5000
@@ -16,6 +18,7 @@
 //
 //     Produces:
 //     - application/json
+//     - application/xml
 //     - text/html
 //     - text/plain
 //
