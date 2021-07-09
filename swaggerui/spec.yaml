@@ -1,8 +1,7 @@
 basePath: /
 consumes:
-- application/json
-- application/x-www-form-urlencoded
-host: localhost:5000
+  - application/json
+  - application/x-www-form-urlencoded
 info:
   contact:
     email: mehdi@httphub.io
@@ -23,312 +22,313 @@ paths:
     get:
       operationId: Auth
       parameters:
-      - description: username
-        in: path
-        name: user
-      - description: password
-        in: path
-        name: passwd
+        - description: username
+          in: path
+          name: user
+        - description: password
+          in: path
+          name: passwd
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Successful authentication
         "404":
           description: Unsuccessful authentication
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Basic Auth protected route.
       tags:
-      - Auth
+        - Auth
   /auth/basic/{user}/{passwd}:
     get:
       operationId: Auth
       parameters:
-      - description: username
-        in: path
-        name: user
-      - description: password
-        in: path
-        name: passwd
+        - description: username
+          in: path
+          name: user
+        - description: password
+          in: path
+          name: passwd
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Successful authentication
         "401":
           description: Unsuccessful authentication
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Basic Auth protected route.
       tags:
-      - Auth
+        - Auth
   /auth/bearer:
     get:
       operationId: Auth
       parameters:
-      - description: Bearer Auth header
-        in: headers
-        name: Authorization
+        - description: Bearer Auth header
+          in: headers
+          name: Authorization
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Successful authentication
         "401":
           description: Unsuccessful authentication
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Bearer Auth protected route.
       tags:
-      - Auth
+        - Auth
   /cache:
     get:
       operationId: Response
       parameters:
-      - in: headers
-        name: if-Modified-Since
-      - in: headers
-        name: If-None-Match
+        - in: headers
+          name: if-Modified-Since
+        - in: headers
+          name: If-None-Match
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Cached response.
         "304":
           description: Modified.
       schemes:
-      - http
-      - https
-      summary: Returns a 304 if an If-Modified-Since header or If-None-Match is present.
+        - http
+        - https
+      summary:
+        Returns a 304 if an If-Modified-Since header or If-None-Match is present.
         Otherwise returns 200.
       tags:
-      - Response inspection
+        - Response inspection
   /cache/{value}:
     get:
       operationId: Response
       parameters:
-      - in: path
-        name: value
-        required: true
-        type: integer
+        - in: path
+          name: value
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Cached response.
         "400":
           description: Path variable value not an integer.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Sets Cache-Control header for n seconds.
       tags:
-      - Response inspection
+        - Response inspection
   /cookies:
     get:
       operationId: Cookies
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Cookie data.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Cookie data.
       tags:
-      - Cookies
+        - Cookies
   /cookies/delete:
     get:
       operationId: Cookies
       parameters:
-      - in: query
-        name: names
-        required: true
-        type: string
+        - in: query
+          name: names
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "302":
           description: Deletes cookie data and redirects to /cookies.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Deletes cookies specified in query args and redirects to /cookies.
       tags:
-      - Cookies
+        - Cookies
   /cookies/set:
     get:
       operationId: Cookies
       parameters:
-      - in: query
-        name: whoami
-        required: true
-        type: string
+        - in: query
+          name: whoami
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "302":
           description: Sets cookie data and redirects to /cookies.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Sets cookie data and redirects to /cookies.
       tags:
-      - Cookies
+        - Cookies
   /cookies/set/{name}/{value}:
     get:
       operationId: Cookies
       parameters:
-      - in: path
-        name: name
-        required: true
-        type: string
-      - in: path
-        name: value
-        required: true
-        type: string
+        - in: path
+          name: name
+          required: true
+          type: string
+        - in: path
+          name: value
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "302":
           description: Sets cookie data and redirects to /cookies.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Sets cookie data and redirects to /cookies.
       tags:
-      - Cookies
+        - Cookies
   /delete:
     delete:
       operationId: postRequest
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's DELETE params.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's DELETE params.
       tags:
-      - HTTP Methods
+        - HTTP Methods
   /get:
     get:
       operationId: getRequest
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's query args.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's query args.
       tags:
-      - HTTP Methods
+        - HTTP Methods
   /headers:
     get:
       operationId: Request
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's headers
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's headers.
       tags:
-      - Request inspection
+        - Request inspection
   /html:
     get:
       operationId: Response
       produces:
-      - text/html
+        - text/html
       responses:
         "200":
           description: HTML document.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Returns an HTML document.
       tags:
-      - Response formats
+        - Response formats
   /ip:
     get:
       operationId: Request
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's IP address
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's origin.
       tags:
-      - Request inspection
+        - Request inspection
   /json:
     get:
       operationId: Response
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: JSON document.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Returns a JSON document.
       tags:
-      - Response formats
+        - Response formats
   /patch:
     patch:
       operationId: postRequest
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's PATCH params.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's PATCH params.
       tags:
-      - HTTP Methods
+        - HTTP Methods
   /post:
     post:
       operationId: postRequest
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's post params.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's POST params.
       tags:
-      - HTTP Methods
+        - HTTP Methods
   /put:
     put:
       operationId: postRequest
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's PUT params.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's PUT params.
       tags:
-      - HTTP Methods
+        - HTTP Methods
   /redirect:
     get:
       operationId: Redirects
@@ -336,66 +336,66 @@ paths:
         "302":
           description: Redirection to a random URL.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Redirects to a random relatice url.
       tags:
-      - Redirects
+        - Redirects
   /redirect/{url}:
     get:
       operationId: Redirects
       parameters:
-      - description: username
-        in: path
-        name: url
+        - description: username
+          in: path
+          name: url
       responses:
         "302":
           description: Redirection to the specified URL.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Redirects to the provided url.
       tags:
-      - Redirects
+        - Redirects
   /request:
     get:
       operationId: Request
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's IP address, user agent and headers
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's information.
       tags:
-      - Request inspection
+        - Request inspection
   /response-headers:
     get:
       operationId: Response
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: Response headers.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Returns the passed query string args as headers.
       tags:
-      - Response inspection
+        - Response inspection
   /status/{code}:
     get:
       operationId: codes
       parameters:
-      - description: Status code
-        in: path
-        name: code
-        required: true
+        - description: Status code
+          in: path
+          name: code
+          required: true
       produces:
-      - application/json
-      - text/plain
+        - application/json
+        - text/plain
       responses:
         "100":
           description: Information responses
@@ -408,59 +408,59 @@ paths:
         "500":
           description: Server errors
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Return the given status code
       tags:
-      - Status codes
+        - Status codes
   /txt:
     get:
       operationId: Response
       produces:
-      - text/plain
+        - text/plain
       responses:
         "200":
           description: Plain text document.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Returns a plain text document.
       tags:
-      - Response formats
+        - Response formats
   /user-agent:
     get:
       operationId: Request
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: The request's user-agent
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: The request's user-agent.
       tags:
-      - Request inspection
+        - Request inspection
   /xml:
     get:
       operationId: Response
       produces:
-      - application/xml
+        - application/xml
       responses:
         "200":
           description: XML document.
       schemes:
-      - http
-      - https
+        - http
+        - https
       summary: Returns a XML document.
       tags:
-      - Response formats
+        - Response formats
 produces:
-- application/json
-- application/xml
-- text/html
-- text/plain
+  - application/json
+  - application/xml
+  - text/html
+  - text/plain
 schemes:
-- http
-- https
+  - http
+  - https
 swagger: "2.0"
