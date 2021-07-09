@@ -20,10 +20,10 @@ func New() http.Handler {
 
 	// HTTP Methods handlers
 	handler.HandleFunc("/get", ViewGet).Methods("GET")
-	handler.HandleFunc("/put", ViewPut).Methods("PUT")
 	handler.HandleFunc("/post", ViewPost).Methods("POST")
-	handler.HandleFunc("/patch", ViewPatch).Methods("patch")
-	handler.HandleFunc("/delete", ViewDelete).Methods("delete")
+	handler.HandleFunc("/put", ViewPut).Methods("PUT", "OPTIONS")
+	handler.HandleFunc("/patch", ViewPatch).Methods("PATCH", "OPTIONS")
+	handler.HandleFunc("/delete", ViewDelete).Methods("DELETE", "OPTIONS")
 	handler.HandleFunc("/any", ViewAny)
 
 	// Request inspection handlers
