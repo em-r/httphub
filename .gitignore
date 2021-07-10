@@ -14,3 +14,4 @@
 # misc
 .vscode
 .env
+.dev.env

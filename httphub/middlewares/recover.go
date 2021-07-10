@@ -94,6 +94,7 @@ func Recover(h http.Handler) http.Handler {
 
 				stack := debug.Stack()
 				parsedStack := parseStack(string(stack))
+				w.Header().Set("content-type", "text/html")
 				fmt.Fprintf(w, "<h1>Panic: %v</h1><pre>%s</pre>", err, parsedStack)
 				return
 			}
