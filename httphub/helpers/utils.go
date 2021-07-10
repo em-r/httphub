@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var PORT int = 5000
+var PORT int = 80
 
 // IsDevMode returns true if DEV_MODE is present in the environment variables, and set to a non
 // false value.
