@@ -11,6 +11,21 @@ import (
 
 var PORT int = 80
 
+// checking if there's an already set PORT env variable, this is mainly for Heroku deployment.
+func init() {
+	p, ok := os.LookupEnv("PORT")
+	if !ok {
+		return
+	}
+
+	portInt, err := strconv.Atoi(p)
+	if err != nil {
+		return
+	}
+
+	PORT = portInt
+}
+
 // IsDevMode returns true if DEV_MODE is present in the environment variables, and set to a non
 // false value.
 func IsDevMode() bool {
