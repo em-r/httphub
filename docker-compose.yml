@@ -9,4 +9,3 @@ services:
       - "80:80"
     volumes:
       - .:/home/src/app
-    env_file: .env
