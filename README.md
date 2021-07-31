@@ -47,4 +47,5 @@ Currently, HTTPHub covers the following topics:
 ## Acknowledgements
 
 - [This project is inspired from Kenneth Reitz' httpbin](https://httpbin.org)
+- [Special thanks to MDN for their amazing docs](https://developer.mozilla.org/)
 - [README created using readme.so](https://readme.so)
